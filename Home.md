@@ -21,14 +21,23 @@ Q3F EVB开发套件标准版是一款基于InfoTM Q3F（Q3420P）处理器的音
 	
 其中芯片主控Q3F（Q3420P）处理器是开发套件的核心，详细数据见[芯片手册](https://github.com/InfoTM-SDK/Q3FSDK/wiki/Q3420P%E8%8A%AF%E7%89%87%E6%89%8B%E5%86%8C%EF%BC%88%E7%AE%80%E7%89%88%EF%BC%89)。
 
+开发套件如下
+
+![Q3F evb](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/Q3Fevb.JPG)
+
+开发套件的架构示意图
+
+![Q3F evb block](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/Q3Fevbblockdiagram.JPG)
+
 # EVB功能说明
 - 开机启动
-    + 快速开机
+    + 设备上电，快速开机
     + 开机过程，指示灯（上电、网络状态等指示）
     + UI启动成功，Camera采集图像显示成功
 
 - 快速联网
-    + 开机后联网，二维码扫描联网/声波联网
+    + 开机后首次联网，二维码扫描联网/声波联网
+    + 其他联网方法，通过UI进行配置或手机APP UI进行配置
 
 - 插入SD卡
     + SD卡格式化
@@ -45,10 +54,12 @@ Q3F EVB开发套件标准版是一款基于InfoTM Q3F（Q3420P）处理器的音
     + 录像（H264 1080P 30fps、720P 30fps）
     + 拍照（JPEG 400万）
     + 图像设置（分辨率、曝光、锐度、白平衡、色彩、ISO）
-    + 数字水印
+    + 数字水印功能
+    + 其他产品所需功能
 
-# 调试说明
-* 串口调试
-* 配置和编译
-* 烧录升级
+# 基于开发套件和SDK开发和调试
+* 开发环境搭建
+* SDK配置和编译
+* 开发套件固件手动烧录升级
+* 调试接口
 * 产测
