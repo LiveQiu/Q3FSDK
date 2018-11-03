@@ -248,4 +248,4 @@ sdb是SD卡在PC系统上的设备节点，可以通过ls /dev/sd*来查看SD卡
 
 6. 拔出烧录卡后，设备自动重启进入新烧录的系统。
 
-# 调试接口
+# [调试接口](https://github.com/InfoTM-SDK/Q3FSDK/wiki/SDK%E8%B0%83%E8%AF%95%E6%8E%A5%E5%8F%A3)
