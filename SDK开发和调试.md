@@ -1,0 +1,240 @@
+# 开发环境搭建
+SDK需要在Linux系统上进行编译，Linux系统种类繁多，我们推荐用户使用以下系统执行SDK的编译：Ubuntu 16.04。开发者需要基本的使用ubuntu系统开发的经验。
+
+在编译前需要安装编译所需的工具和库文件。在准备好基本的PC开发系统后，更新系统软件库：
+
+```
+sudo apt-get update
+sudo apt-get upgrade
+```
+
+之后采用apt-get install来安装以下需要的工具和库文件。
+
+```
+sudo apt-get install make automake autoconf gcc g++ python curl lzop perl build-essential libncurses5 libssl-dev libncursesw5-dev libncurses5-dev lsb ia32-libs
+```
+
+在完成了依赖工具和库文件的安装后，就可以开始SDK的开发与编译了。
+
+# SDK配置和编译
+开发人员拿到SDK package源码包后，可以通过以下命令来对源码包进行解压操作：
+
+`tar zxvf SDK_XXXX.tgz`
+
+## SDK结构
+解压后的SDK基本的目录结构说明如下：
+
+|目录1|目录2|说明|
+|--------|---------|----------------------------------|
+|bootloader||      # uboot source code 
+||apollo |      # uboot0 for q35xx 
+||apollo2 |     # uboot0 for q34xx 
+||uboot1 |    # uboot1 code, provide stronger uboot functions like tftp, vfat, etc. 
+|buildroot||       # build tools
+||download |    # packages managed in tgz format 
+||prebuilts |   # toolchains used by QSDK 
+|kernel||          # linux kernel source code 
+|output||          # output folder, contains object files, bins and staging files 
+||build |      # contains build-folder for each package 
+||gendisk |   # temp folder used by tools/gendisk.sh, to create Boot Card 
+||host |      # built host tools 
+||images |   # compiled images, includes uboot0.isi, uImage, ramdisk.img etc.
+||product |    # a softlink to a specific product in products folder 
+||root |       # ramdisk files folder 
+||staging |     # contains static libraries and header files 
+||stamps |      # build time stamps management 
+||system |      # system files folder, the default root filesystem 
+|products||        # product configuration folder 
+||q3evb_v1.1 |  # configurations for q3evb_v1.1 
+||q3fevb_va |   # configurations for q3fevb_va 
+||...  |        # other products 
+|system||          # system packages 
+||app-c02 |     # an IPC app, for product c02 
+||app-dvlauncher|	# an SportDV app, for product q360 
+||audiobox |    # QSDK audio solution, provides daemon process and libbrary 
+||bblite|	  #standalone busybox, can be configured separately, used by ramdisk 
+||cep |   # QSDK event solution, provides common events, like key, ac-in etc. 
+||eventhub |    # QSDK event solution, provides daemon process and library 
+||hlibXXX |     # QSDK hardware libraries 
+||... |
+||libXXX  |     # pure software libraries 
+||... |
+||qlibXXX  |    # QSDK special libraries 
+||... |
+||testing |     # QSDK test codes 
+||upgrade |   # QSDK upgrade solution, provides an default app and a library 
+||videobox|     # QSDK video data path solution 
+|tools||           # tools 
+|gendisk.sh||      # tools to make Boot Card for q35xx 
+|mkburn.sh||       # tools to make IUS Card
+|post-scripts.sh|| # scripts to execute after compilation
+|q3fgendisk.sh||   # tools to make Boot Card for q34xx 
+|setproduct.sh||   # tools to select product
+
+## 配置和编译
+开发人员在编译过程中需要根据产品类型/需求对SDK进行配置，详细的流程描述如下。
+
+### 产品相关配置
+1. 选择产品型号，在SDK的源码根目录下输入以下命令：
+
+`./tools/setproduct.sh`
+
+SDK将详细列出该版本支持的产品类型，开发人员通过输入对应产品型号的序列号进行产品型号选择操作。例如：
+
+```
+abc@Dell-OptiPlex-390:~/workspace/q3f-sdk-v1.1$./tools/setproduct.sh
+sensor_num1:-1,sensor_num2:-1
+
+please choose a product from list below:
+
+0  :apollo3_evb
+1  :apollo3_evb_ipc
+2  :apollo3_evb_cardv
+3  :apollo3_evb_fpga
+
+your choice: 2
+#
+# configuration written to /home/abc/workspace/q3f-sdk-v1.1/.config
+#
+```
+
+产品配置成功后，会有以下提示信息：
+
+```
+# configuration written to /home/abc/workspace/q3f-sdk-v1.1/.config
+product successfully set to q3f-sdk-v1.1
+```
+
+2. 配置Camera Sensor，在完成产品型号选择后，SDK编译程序将自动提示用户进行Camera Sensor的配置。用户可根据SDK支持的Sensor类型，结合实际设备的硬件信息，依次配置每个Camera Sensor的型号参数。示例如下：
+
+```
+Please select sensor configure:
+  sensor0:
+     0   :ar0330dvp
+     1   :ar0330mipi
+     2   :ov4689mipi
+     x   :none sensor0
+your select: 2
+src = /home/abc/workspace/q3f-sdk-v1.1/products/q3evb_v1.1/isp/sensor0/ov4689mipi
+sensor0-config.txt
+sensor0-isp-config.txt
+sensor0-lsh-config.lsh
+
+Please select sensor configure:
+  sensor1:
+     0   :ar0330dvp
+     1   :ar0330mipi
+     2   :ov4689mipi
+     x   :none sensor0
+your select: x
+
+```
+在Sensor的配置中选择“x”，表示设备上不存在第二个sensor。
+
+在上面的示例中，我们按照开发套件上的摄像头硬件情况，选择了一个摄像头，型号为ov4689mipi。
+
+3. 选择产品使用的json文件，在完成Camera Sensor的配置后，SDK的编译脚本会自动提示用户选择产品json文件。用户根据实际的使用情况，选择对应的json文件即可，示例如下：
+
+```
+Please select product json configure:
+  json:
+     0   :path_dual.json
+     1   :path.json
+     x   :none json
+your select: x
+```
+
+以上已经完成了产品的所有配置工作。所有的工作可以使用参数配置的方法一次性完成。
+
+命令带参数格式：
+
+`./tool/setproduct.sh –px -sxx -jx`
+
+* -px：选择产品配置的型号，其中x表示数字，数字的值为手动配置时对应列表前面的数字
+* -sxx: 选择sensor，第一个x表示第0个seneor的序号，第二个x表示第1个sensor的序号
+* -jx：选择json为系统默认的json
+* 假如-p，-s或-j中任何一个没有指定，则需要手动指定
+
+示例的产品配置可以用以下命令完成：
+
+`./tool/setproduct.sh –p2 -s2x -jx`
+
+### 模块配置
+
+在产品配置的环节，已经生成了产品的.config文件，可以跳过本步骤，直接进入编译环节。
+
+如果开发者希望手动的修改一些差异的配置，可以通过对代码模块的配置来达成。在基于Q3F SDK的开发过程，主要的配置涉及linux内核配置和SDK的配置。其对应的配置命令分别为：
+
+```
+make linux-menuconfig
+make menuconfig
+```
+
+Menuconfig是一种菜单式的配置方式，其是一种基于命令行的、交互的、询问式的配置方法。Linux下的开发者不会陌生。
+
+menuconfig中涉及的配置项较多，开发人员在不了解其具体功能前请不要做随意更改。若需要修改，请先查询[配置相关详细文档]()。
+
+### 编译镜像
+
+开始执行编译操作。在SDK代码的根目录下执行make命令后，即可开始编译操作。
+
+若需要确保编译镜像无历史遗留文件或过期的改动，可先执行make clean操作。
+
+编译完成后编译窗口会显示如下信息：
+
+```
+...
+Generating spi burning output/images/spi_burn ...
+spiblk init uboot 49152
+spiblk init item 16384
+spiblk init kernel0 2662400
+spiblk init system 12800000
+generated!
+```
+
+整个编译时间较长，第一次完整编译在一个小时左右。
+
+### 镜像说明
+
+在SDK完成了整体编译后，会自动将我们烧录和debug需要使用的镜像文件和升级包拷贝至output/images目录下，目录中的主要文件在下表中做了详细说明。
+
+|镜像文件	|说明|
+|--------------|-------------------------|
+|items.itm|	配置文件|
+|ramdisk.img|	ramdisk镜像，内有烧录程序，在烧录过程中使用|
+|system.img|	系统镜像，可选为ext4或squash格式，启动后挂载成root|
+|uboot0.isi|	bootloader镜像|
+|uImage|	Linux内核|
+|burn.ius|	烧录镜像。通过InfoTM升级包制做工具(IUW)将上述各镜像打包，就生成了burn.ius，用于制做烧录卡|
+|ota.ius|	OTA镜像，用于做OTA升级|
+|vmlinux|	未压缩的内核，ELF文件，即编译出来的最原始的文件。用于kernel-debug，可产生system.map符号表|
+
+### 常用编译命令
+
+在SDK的开发过程中我们为了方便调试，提供了以下的编译命令来节省整体编译的时间。
+
+|编译命令	|说明|
+|--------------|-------------------------|
+make package	|单独编译某package
+make package-rebuild	|修改某package代码后，增量编译该package
+make package-dirclean; make package	|修改某package的编译脚本后（如：Makefile.am, configure.ac, package.mk 等）
+make uboot-rebuild	|更改uboot后，增量编译uboot
+make linux-rebuild	|更改kernel后，增量编译kernel
+make menuconfig	|配置QSDK
+make linux-menuconfig	|配置内核
+make busybox-menuconfig	|配置busybox
+make bblite-menuconfig	|配置小busybox(ramdisk用)
+
+# 开发套件固件手动烧录升级
+在SDK整体编译完成之后，目标目录下会生成具体的镜像文件，接下来的工作就是将镜像文件烧录至产品设备中。
+
+## Linux下制作烧录卡
+烧录卡制作工具包含在了SDK源码中，工具目录如下：../tools/mkburn.sh，用户在制作烧录卡时只需要在SDK代码的根目录下运行以下命令即可。
+
+`. tools/mkburn.sh /dev/sdb`
+
+sdb是SD卡在PC系统上的设备节点，可以通过ls /dev/sd*来查看SD卡真实的节点名称。
+
+## 镜像烧录升级
+
+# 调试接口
