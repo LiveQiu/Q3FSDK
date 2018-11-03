@@ -19,7 +19,7 @@ Q3F EVB开发套件标准版是一款基于InfoTM Q3F（Q3420P）处理器的音
 |接口	|SD卡槽、以太、喇叭、麦克、USB 2.0 OTG、按键|
 |OS	|Linux + InfoTM QSDK|
 	
-其中芯片主控Q3F（Q3420P）处理器是开发套件的核心，详细数据见芯片手册。
+其中芯片主控Q3F（Q3420P）处理器是开发套件的核心，详细数据见[芯片手册](https://github.com/InfoTM-SDK/Q3FSDK/wiki/Q3420P%E8%8A%AF%E7%89%87%E6%89%8B%E5%86%8C%EF%BC%88%E7%AE%80%E7%89%88%EF%BC%89)。
 
 # EVB功能说明
 - 开机启动
