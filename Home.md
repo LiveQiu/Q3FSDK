@@ -57,7 +57,7 @@ Q3F EVB开发套件标准版是一款基于InfoTM Q3F（Q3420P）处理器的音
     + 数字水印功能
     + 其他产品所需功能
 
-# 基于开发套件和SDK开发和调试
+# [基于开发套件和SDK开发和调试](https://github.com/InfoTM-SDK/Q3FSDK/wiki/SDK%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E4%B8%8E%E7%BC%96%E8%AF%91%E7%83%A7%E5%BD%95)
 * 开发环境搭建
 * SDK配置和编译
 * 开发套件固件手动烧录升级
