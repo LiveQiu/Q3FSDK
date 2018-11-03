@@ -10,9 +10,7 @@ sudo apt-get upgrade
 
 之后采用apt-get install来安装以下需要的工具和库文件。
 
-```
-sudo apt-get install make automake autoconf gcc g++ python curl lzop perl build-essential libncurses5 libssl-dev libncursesw5-dev libncurses5-dev lsb ia32-libs
-```
+`sudo apt-get install make automake autoconf gcc g++ python curl lzop perl build-essential libncurses5 libssl-dev libncursesw5-dev libncurses5-dev lsb ia32-libs`
 
 在完成了依赖工具和库文件的安装后，就可以开始SDK的开发与编译了。
 
