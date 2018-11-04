@@ -82,25 +82,25 @@ Windows下的具体配置流程如下：
 
 2. 打开PC端设备管理器，在端口一栏中找到其他设备中的带叹号设备，如图所示。（如果驱动已正常安装可直接跳至第7步）
 
-![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/Q3Fsecurecrt1.JPG)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/Q3Fsecurecrt1.JPG)
 
 3. 通过查找串口线上的芯片，如这次串口线上的芯片为ft232，在网上找到对应的驱动，并下载解压。
 
 4. 右键点击USB Serial Port，选择“更新驱动程序软件”，点击“浏览计算机以查找驱动程序软件”，并选择之前解压得到的文件夹，如图所示。
 
-![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/Q3Fsecurecrt2.JPG)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/Q3Fsecurecrt2.JPG)
 
 5. 点击下一步后，等待安装结束；
 
-![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/Q3Fsecurecrt3.JPG)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/Q3Fsecurecrt3.JPG)
 
 6. 重新拔插串口线（或选择扫描设备硬件改动），刷新设备管理器，如图所示，该串口已正常工作；
 
-![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/Q3Fsecurecrt4.JPG)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/Q3Fsecurecrt4.JPG)
 
 7. 成功安装securecrt后运行软件，在串口设置界面添加串口的参数设置，具体参数如图所示：
 
-![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/Q3Fsecurecrt5.JPG)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/Q3Fsecurecrt5.JPG)
 
 8. 至此，串口已能正常使用了。
 
