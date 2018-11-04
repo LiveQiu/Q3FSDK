@@ -198,3 +198,20 @@ Kernel command line: console=ttyAMA3, 115200 mem=62M rootfstype=squashfs root=/d
 VFS: Mounted root (squashfs filesystem) readonly on device 251:1	|root 文件系统挂载成功
 Starting logging: OK	|执行 init.d 的启动脚本
 Videobox started	|videobox 启动完成
+
+# SDK开发
+* 如何添加一个产品，并对产品进行模块配置？
+
+* 如何根据产品需要配置产品的json文件？
+
+* 如何根据产品硬件配置固件的item文件？
+
+* 如何增添一款新的Camera Sensor？
+
+* 如何增添一款新的Wifi模块？
+
+* 如何增添自己的应用程序，并添加到启动流程中？
+
+* 对接其他平台时，如何获得Q3F系统平台的音视频数据？
+
+* 更详细的软硬件资料和更专业的技术支持如何获得？
