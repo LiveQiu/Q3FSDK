@@ -23,11 +23,11 @@ Q3F EVB开发套件标准版是一款基于InfoTM Q3F（Q3420P）处理器的音
 
 开发套件如下
 
-![Q3F evb](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/Q3Fevb.JPG)
+![Q3F evb](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/Q3Fevb.JPG)
 
 开发套件的架构示意图
 
-![Q3F evb block](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/Q3Fevbblockdiagram.JPG)
+![Q3F evb block](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/Q3Fevbblockdiagram.JPG)
 
 # EVB功能说明
 - 开机启动
@@ -62,4 +62,3 @@ Q3F EVB开发套件标准版是一款基于InfoTM Q3F（Q3420P）处理器的音
 * SDK配置和编译
 * 开发套件固件手动烧录升级
 * 调试接口
-* 产测
