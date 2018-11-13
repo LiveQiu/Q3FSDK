@@ -1,24 +1,6 @@
-# Wi-Fi模块调试指南
-
-### 适用产品
-
-| 类别 | 适用对象 |
-|---|
-| 软件版本 | `QSDK-V2.2.0` |
-| 芯片型号 | `Apollo` `Apollo-2` `Apollo-ECO` |
-
-### 修订记录
-
-| 修订说明 | 日期 | 作者 |
-|---|
-| 初版 | 2017/07/27 | Bob Yang |
-
 ### 术语解释
-
 | 术语 | 解释 |
-|---|
-| SDK  | Software Development Kit，软件开发工具包 |
-| API  | Aplication Program Interface，应用程序接口 |
+|---|-----------|
 | wpa_supplicant | 一个开源的Wi-Fi管理和控制程序，主要在Wi-Fi STA模式下使用 |
 | hostapd | 一个开源的Wi-Fi管理和控制程序，主要在Wi-Fi AP模式下使用 |
 | STA 模式 | Station，类似于无线终端，STA本身并不接受无线的接入,它可以连接到 AP，一般无线网卡即工作在该模式 |
@@ -33,7 +15,7 @@
 ## 2 总体描述
 ## 2.1 系统架构
 
-![](wifi_sys_frame.svg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/wifi_sys_frame.svg)
 
 应用程序调用Wi-Fi应用层API与HAL层通讯，Wi-Fi HAL层与Wi-Fi内核驱动程序通讯。
 
@@ -42,7 +24,7 @@
 
 我们以应用程序d304main，Wi-Fi模块AP6212为例（全文同）
 
-![](wifi_sys_flow.svg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/wifi_sys_flow.svg)
 
 * **wifi**作为一个服务进程存在于系统中，它对应的就是Wi-Fi的HAL层。可以在系统启动时，在启动脚本（**/etc/init.d/S904tutk**）中启动wifi程序。
 * **/wifi/bcmdhd.ko**是AP6212的内核驱动程序，**wifi**进程会加载该驱动。加载成功之后**wifi**进程通过**wpa_supplicant**或者**hostapd**与该驱动通讯。
