@@ -22,52 +22,57 @@ sudo apt-get upgrade
 ## SDK结构
 解压后的SDK基本的目录结构说明如下：
 
-|目录1|目录2|说明|
-|--------|---------|----------------------------------|
-|bootloader||      # uboot source code 
-||apollo |      # uboot0 for q35xx 
-||apollo2 |     # uboot0 for q34xx 
-||uboot1 |    # uboot1 code, provide stronger uboot functions like tftp, vfat, etc. 
-|buildroot||       # build tools
-||download |    # packages managed in tgz format 
-||prebuilts |   # toolchains used by QSDK 
-|kernel||          # linux kernel source code 
-|output||          # output folder, contains object files, bins and staging files 
-||build |      # contains build-folder for each package 
-||gendisk |   # temp folder used by tools/gendisk.sh, to create Boot Card 
-||host |      # built host tools 
-||images |   # compiled images, includes uboot0.isi, uImage, ramdisk.img etc.
-||product |    # a softlink to a specific product in products folder 
-||root |       # ramdisk files folder 
-||staging |     # contains static libraries and header files 
-||stamps |      # build time stamps management 
-||system |      # system files folder, the default root filesystem 
-|products||        # product configuration folder 
-||q3evb_v1.1 |  # configurations for q3evb_v1.1 
-||q3fevb_va |   # configurations for q3fevb_va 
-||...  |        # other products 
-|system||          # system packages 
-||app-c02 |     # an IPC app, for product c02 
-||app-dvlauncher|	# an SportDV app, for product q360 
-||audiobox |    # QSDK audio solution, provides daemon process and libbrary 
-||bblite|	  #standalone busybox, can be configured separately, used by ramdisk 
-||cep |   # QSDK event solution, provides common events, like key, ac-in etc. 
-||eventhub |    # QSDK event solution, provides daemon process and library 
-||hlibXXX |     # QSDK hardware libraries 
-||... |
-||libXXX  |     # pure software libraries 
-||... |
-||qlibXXX  |    # QSDK special libraries 
-||... |
-||testing |     # QSDK test codes 
-||upgrade |   # QSDK upgrade solution, provides an default app and a library 
-||videobox|     # QSDK video data path solution 
-|tools||           # tools 
-|gendisk.sh||      # tools to make Boot Card for q35xx 
-|mkburn.sh||       # tools to make IUS Card
-|post-scripts.sh|| # scripts to execute after compilation
-|q3fgendisk.sh||   # tools to make Boot Card for q34xx 
-|setproduct.sh||   # tools to select product
+```
+QSDK release 目录结构如下：
+    |-- tools                       # 存放单核媒体处理平台的目录
+    |   |-- gendisk.sh              # 组件源代码
+    |   |-- mkburn.sh               # 组件源代码
+    |   |-- qsdk.init               # 组件源代码
+    |   |-- qsdk.clean              # SDK清理脚本
+    |   |-- qsdk.env                # QSDK环境变量脚本
+    |   |-- ....
+    |-- busybox                     # busybox源代码
+    |-- kernel                      # kernal源代码
+    |-- toolchain                   # 交叉编译链
+    |-- uboot                       # uboot源代码
+    |   |-- uboot0                  # uboot0 源代码
+    |   |-- uboot1                  # uboot1 源代码
+    |-- qsdk                        # qsdk
+    |   |-- ramdisk                 # qsdk生成ramdisk所需的部分文件
+    |   |-- include                 # qsdk编译所需头文件
+    |   |-- bin                     # qsdk 所需的预编译二进制文件
+    |   |-- etc                     # 部分二进制程序所需的配置文件
+    |   |-- usr                     # qsdk各种库和二进制文件
+    |   |   |-- bin                 # 二进制应用程序
+    |   |   |-- lib                 # 动态库和静态库
+    |-- private                     # 编译好的内核驱动等文件
+    |   |-- Felix.ko                # 编译好的第三方私有内核驱动
+    |-- products                    # uboot,kernel,busybox,item,编译好的镜像、工具、drv驱动等
+    |   |-- q3fevb_va               # producst
+    |   |   |-- isp                 # isp setting
+    |   |   |-- items.itm           # item setting
+    |   |   |-- configs             # 内核
+    |   |   |   |-- linux-defconfig   # 内核配置参数
+    |   |   |   |-- busybox-defconfig # system镜像busybox配置参数
+    |   |   |   |-- bblite-defconfig  # ramdisk 镜像中busybox配置参数
+    |   |   |-- ispost              # ispost配置目录
+    |   |   |-- burn.ixl            # 系统烧写镜像参数文件
+    |   |   |-- ota.ixl             # ota镜像制作参数文件
+    |   |   |-- system              # system rootfs overlay目录
+    |   |   |-- root                # randisk rootfs overlay目录
+    |-- packages                    # qsdk发布的部分软件包，方便用户调试camera，wifi等设备
+    |   |-- hlibcamsensor           # camsensor driver dir
+    |   |-- qlibwifi                 # Wi-Fi drvier dir
+    |-- samples                     # 存放单核媒体处理平台的目录
+    |   |-- demo                    # 组件源代码
+    |-- output                      # 该目录为使用中的临时生成目录，默认不存在
+    |   |-- host                    # 交叉编译链等主机工具
+    |   |-- staging                 # 编译所需的头文件,库，及二进制文件，所有的编译过程中的头文件查找，库链接都和该文件夹相关
+    |   |-- images                  # 目标系统所需的镜像文件，包含内核等各种
+    |   |-- system                  # system根文件系统目录，最终制作系统正常工作的工作镜像
+    |   |-- root                    # ramdisk根文件系统目录，最终用来制作系统升级和OTA升级的Recovery镜像
+    |   |-- product                 # 特定product的软连接
+```
 
 ## 配置和编译
 开发人员在编译过程中需要根据产品类型/需求对SDK进行配置，详细的流程描述如下。
@@ -83,81 +88,69 @@ SDK将详细列出该版本支持的产品类型，开发人员通过输入对�
 abc@Dell-OptiPlex-390:~/workspace/q3f-sdk-v1.1$./tools/setproduct.sh
 sensor_num1:-1,sensor_num2:-1
 
-please choose a product from list below:
+#please choose a product from list below:
 
 0  :apollo3_evb
 1  :apollo3_evb_ipc
 2  :apollo3_evb_cardv
 3  :apollo3_evb_fpga
 
-your choice: 2
-#
-# configuration written to /home/abc/workspace/q3f-sdk-v1.1/.config
-#
+#your choice: 0
 ```
 
 产品配置成功后，会有以下提示信息：
 
 ```
+#
 # configuration written to /home/abc/workspace/q3f-sdk-v1.1/.config
-product successfully set to q3f-sdk-v1.1
+#
+
+#product successfully set to apollo3_evb
 ```
 
-2. 配置Camera Sensor，在完成产品型号选择后，SDK编译程序将自动提示用户进行Camera Sensor的配置。用户可根据SDK支持的Sensor类型，结合实际设备的硬件信息，依次配置每个Camera Sensor的型号参数。示例如下：
+2. 选择产品使用的数据配置json文件，在完成产品型号的配置后，SDK的编译脚本会自动提示用户选择产品json文件。用户根据实际的使用情况，选择对应的json文件即可，示例如下：
 
 ```
-Please select sensor configure:
-  sensor0:
+Please choose product json configuration:
+  json:
+     0   :path_dual.json
+     1   :path.json
+     x   :default
+your choice: x
+```
+
+3. 配置Camera Sensor，在完成jason文件选择后，SDK编译程序将自动提示用户进行Camera Sensor的配置。用户可根据SDK支持的Sensor类型，结合实际设备的硬件信息，依次配置每个Camera Sensor的型号参数。示例如下：
+
+```
+#Please choose sensor0 configuration:
+
      0   :ar0330dvp
      1   :ar0330mipi
      2   :ov4689mipi
      x   :none sensor0
-your select: 2
-src = /home/abc/workspace/q3f-sdk-v1.1/products/q3evb_v1.1/isp/sensor0/ov4689mipi
-sensor0-config.txt
-sensor0-isp-config.txt
-sensor0-lsh-config.lsh
 
-Please select sensor configure:
-  sensor1:
+#your choice: 2
+
+#Please choose sensor1 configuration:
+
      0   :ar0330dvp
      1   :ar0330mipi
      2   :ov4689mipi
      x   :none sensor0
-your select: x
 
+#your choice: x
+
+#choose configuration successfully to apollo3_evb
 ```
 在Sensor的配置中选择“x”，表示设备上不存在第二个sensor。
 
 在上面的示例中，我们按照开发套件上的摄像头硬件情况，选择了一个摄像头，型号为ov4689mipi。
 
-3. 选择产品使用的json文件，在完成Camera Sensor的配置后，SDK的编译脚本会自动提示用户选择产品json文件。用户根据实际的使用情况，选择对应的json文件即可，示例如下：
-
-```
-Please select product json configure:
-  json:
-     0   :path_dual.json
-     1   :path.json
-     x   :none json
-your select: x
-```
 
 以上已经完成了产品的所有配置工作。所有的工作可以使用参数配置的方法一次性完成。
 
-命令带参数格式：
 
-`./tool/setproduct.sh –px -sxx -jx`
-
-* -px：选择产品配置的型号，其中x表示数字，数字的值为手动配置时对应列表前面的数字
-* -sxx: 选择sensor，第一个x表示第0个seneor的序号，第二个x表示第1个sensor的序号
-* -jx：选择json为系统默认的json
-* 假如-p，-s或-j中任何一个没有指定，则需要手动指定
-
-示例的产品配置可以用以下命令完成：
-
-`./tool/setproduct.sh –p2 -s2x -jx`
-
-### 模块配置
+### 详细模块配置
 
 在产品配置的环节，已经生成了产品的.config文件，可以跳过本步骤，直接进入编译环节。
 
@@ -166,6 +159,7 @@ your select: x
 ```
 make linux-menuconfig
 make menuconfig
+make busybox-menuconfig
 ```
 
 Menuconfig是一种菜单式的配置方式，其是一种基于命令行的、交互的、询问式的配置方法。Linux下的开发者不会陌生。
@@ -185,12 +179,13 @@ menuconfig中涉及的配置项较多，开发人员在不了解其具体功能�
 Generating spi burning output/images/spi_burn ...
 spiblk init uboot 49152
 spiblk init item 16384
-spiblk init kernel0 2662400
+spiblk init ramdisk 4194304
+spiblk init kernel 2662400
 spiblk init system 12800000
 generated!
 ```
 
-整个编译时间较长，第一次完整编译在一个小时左右。
+整个编译时间较长，第一次完整编译在半个小时左右。
 
 ### 镜像说明
 
