@@ -51,7 +51,7 @@ InfoTM的多媒体软件开发平台旨在为应用软件的开发提供便捷�
 
 * Drivers - 提供硬件驱动程序支持，包含多媒体硬件以及其它设备如Wifi，SDIO，USB，I2C等
 
-![](image/arch/qsdk-arch.svg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/qsdk-arch.svg)
 
 
 ----
@@ -62,14 +62,14 @@ InfoTM视频处理系统的核心组件是Videobox，它是一套视频处理的
 ----
 ## 3.2 Videobox框架
 
-![](image/arch/videobox-arch.svg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/videobox-arch.svg)
 
 ----
 ## 3.3 Videobox基础
 ### 3.3.1 简例
 我们通过一个简单的示例，初览一下Videobox的使用。下图实现了从摄像头获取图像，经过H264编码，最后保存在文件的应用。其中，`"isp"`用于从摄像头抓取图像，`"vencoder"`用于H264编码，`"filesink"`则将编码后数据写入文件
 
-![](image/path/basic.svg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/basic.svg)
 
 实现此功能仅需通过编写JSON文件，假定文件名为`path.json`，其内容如下
 
@@ -187,7 +187,7 @@ Note:  IPU的详细使用说明，可参见4 IPU列表
 摄像头输入图像，同时编码两路H264视频，一路分辨率为1920x1080，一路分辨率为640x480。常见应用会将低分辨率视频经Wi-Fi传送预览
 **模型**
 
-![](image/path/dual-enc.svg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/dual-enc.svg)
 
 **JSON描述**
 ```json
@@ -282,7 +282,7 @@ video_put_frame("enc_vga-stream", &stFrameInfo);
 摄像头输入图像，编码一路1080P视频并保存到文件，同时支持拍照功能
 **模型**
 
-![](image/path/enc-jpg.svg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/enc-jpg.svg)
 
 **JSON描述**
 ```json
@@ -374,12 +374,12 @@ video_put_snap("h1jpeg-out", &stFrameInfo);
 ### 3.4.3 图像添加水印
 有些应用场景，如安防，需要在视频中添加日期，此时可以通过水印实现
 
-![](image/path/marker-cn.png)
-![](image/path/marker-date.png)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/marker-cn.png)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/marker-date.png)
 
 **模型**
 
-![](image/path/marker-enc.svg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/marker-enc.svg)
 
 
 **JSON描述**
@@ -502,12 +502,12 @@ Videobox的图像裁剪有两种方式，一种通过配置输出端口实现，
 
 例子中，裁掉输入图像部分黑边
 
-![](image/path/fish.jpg)
-![](image/path/fish-cut.jpg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/fish.jpg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/fish-cut.jpg)
 
 **模型**
 
-![](image/path/isp-crop.svg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/isp-crop.svg)
 
 **JSON描述**
 ```json
@@ -549,12 +549,12 @@ Videobox的图像裁剪有两种方式，一种通过配置输出端口实现，
 
 截取原图中一部分，并对截取部分做放大
 
-![](image/path/zoom0.jpg)
-![](image/path/zoom1.jpg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/zoom0.jpg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/zoom1.jpg)
 
 **模型**
 
-![](image/path/pp-crop.svg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/pp-crop.svg)
 
 **JSON描述**
 ```json
@@ -602,11 +602,11 @@ Videobox的图像裁剪有两种方式，一种通过配置输出端口实现，
 ### 3.4.5 Embezzle功能
 Embezzle功能是将一个IPU输出端口的缓存，同时给另一个IPU的输出端口使用，这样可以将两个IPU的图像输出到相同的缓存，实现图像叠加的效果。典型应用场景是画中画功能
 
-![](image/path/pip.jpg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/pip.jpg)
 
 **模型**
 
-![](image/path/embezzle.svg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/embezzle.svg)
 
 上例中，`"isp"`产生的是1080P大画面，`"pp"`是叠加画面，所以是`"pp"`从`"isp"`的输出端口取得缓存再做叠加，这个顺序非常重要，决定了那个端口是Embezzle的。如果Embezzle的顺序弄反，在这个示例下，小窗口图像将被大画面覆盖
 
@@ -672,7 +672,7 @@ Note:  例中`"pp"`的输出配置中有`"pip_x"`，`"pip_y"`，`"pip_w"`，`"pi
 
 **模型**
 
-![](image/path/softlink.svg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/softlink.svg)
 
 **JSON描述**
 ```json
@@ -749,7 +749,7 @@ Note:  `"vam"`是运动检测模块，通过直方图信息检测运动区域，
 人脸侦测主要用于判断图像中是否存在人脸，如果存在，则提供人脸位置信息。实现该功能的IPU是`fodetv2`，它支持画面中多个人脸的识别。人脸侦测主要用在安防监控领域，是人脸识别的前置功能
 **模型**
 
-![](image/path/fodet.svg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/fodet.svg)
 
 
 **JSON描述**
@@ -863,7 +863,7 @@ int main(void)
 同时播放多路视频流，将每一路的视频合成在一起显示，可以同时看多路画面。此功能可用于NVR回放
 **模型**
 
-![](image/path/dec-swc.svg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/dec-swc.svg)
 
 例中，四路1080P的解码输出到`swc`，经过`swc`合成之后，成一路1080P输出
 
@@ -996,13 +996,13 @@ make menuconfig
 IPU功能配置项
 
 |IPU|配置|说明|备注|
-|---|
+|---|---|---|---|
 |`H1JPEG`|支持软件裁剪和放大功能|用于裁剪和放大输入的YUV图像||
 |`ISPOSTv1`，`ISPOSTv2`|支持动态创建/加载鱼眼矫正数据参数|用于矫正模式的切换||
-|`V2505`|使用其它硬件提供的AWB信息，替代`V2505`提供的|用于解决大色块在暗环境下偏色问题|仅适用`Apollo-2`，`Apollo-ECO`必须关掉|
+|`V2505`|使用其它硬件提供的AWB信息，替代`V2505`提供的|用于解决大色块在暗环境下偏色问题|仅适用`Q3F`，`Q3-ECO`必须关掉|
 |`Marker`|支持FreeType字库|不使用FreeType时，会采用点阵字库，可减小镜像大小||
 |`FFPhoto`|使能软件缩放功能|用于对解码后的图像做缩放|||
-|`Video Encoder`|选择H264或H265硬件编码|配置当前硬件编码支持的类型|QSDK V2.3.0启用，`h1264`仅适用`Apollo`，`Apollo-2`，`h2`仅适用`Apollo`，`h2v4`仅适用`Apollo-ECO`|
+|`Video Encoder`|选择H264或H265硬件编码|配置当前硬件编码支持的类型|QSDK V2.3.0启用，`h1264`仅适用`Q3F`，`Q3-2`，`h2v4`仅适用`Q3-ECO`|
 
 ---
 ## 4 IPU列表
@@ -1012,7 +1012,7 @@ IPU功能配置项
 
 **模型**
 
-![](image/ipu/v2500.svg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/v2500.svg)
 
 **端口说明**
 
@@ -1030,8 +1030,7 @@ IPU功能配置项
 
 **使用限制**
 
-* `Apollo`，`Apollo-2`，`Apollo-ECO`
-*  端口`his1`只用于`Apollo` ISP同时输出两路视频时通路1的直方图信息。`Apollo-2`, `Apollo-ECO` ISP没有通路1的输出
+* `Q3F`, `Q3-ECO` ISP没有通路1的输出
 
 ----
 ### 4.2 isplus （Beta版）
@@ -1040,7 +1039,7 @@ IPU功能配置项
 
 **模型**
 
-![](image/ipu/isplus.svg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/isplus.svg)
 
 **端口说明**
 同v2500
@@ -1050,7 +1049,7 @@ IPU功能配置项
 
 **使用限制**
 
-* `Apollo-2`，`Apollo-ECO`
+* `Q3F`，`Q3-ECO`
 * 不能和`ispost`/`ispostv2`一起使用
 * 输出帧率为设定帧率一半
 
@@ -1061,7 +1060,7 @@ IPU功能配置项
 
 **模型**
 
-![](image/ipu/ispost.svg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/ispost.svg)
 
 **端口说明**
 
@@ -1083,10 +1082,7 @@ IPU功能配置项
 
 **使用限制**
 
-* `Apollo`
-* 最大输入分辨率4096x4096
-* `ss0`,`ss1`输出分辨率的宽度不可超过1280
-* `ov0`输入要求图像宽度8像素对齐，宽度不小于48，高度不小于32
+
 
 ----
 ### 4.4 ispostv2
@@ -1095,7 +1091,7 @@ IPU功能配置项
 
 **模型**
 
-![](image/ipu/ispostv2.svg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/ispostv2.svg)
 
 **端口说明**
 
@@ -1130,7 +1126,7 @@ IPU功能配置项
 
 **使用限制**
 
-   * `Apollo-2`，`Apollo-ECO`
+   * `Q3F`，`Q3-ECO`
    * `ss0`,`ss1`输出分辨率的宽度需小于等于1280
    * `ss0`,`ss1`的输出分辨率要小于`uo`或`dn`
    * `ov0`输入要求图像宽度8对齐，宽度不小于48，高度不小于32
@@ -1145,7 +1141,7 @@ H264编码模块
 
 **模型**
 
- ![](image/ipu/h1264.svg)
+ ![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/h1264.svg)
 
 **端口说明**
 
@@ -1181,7 +1177,7 @@ H264编码模块
 
 **使用限制**
 
-   * `Apollo`，`Apollo-2`
+   * `Q3F`
    * 使能`enable_longterm`时，需要额外多一张帧缓存
 
 Note:  对应IPU功能列表中的`H1264`，QSDK V2.3.0及之后版本使用`Video Encoder`选中配置`h1264`
@@ -1193,7 +1189,7 @@ H265编码模块
 
 **模型**
 
-![](image/ipu/h2.svg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/h2.svg)
 
 **端口说明**
 
@@ -1225,9 +1221,6 @@ H265编码模块
 
 **使用限制**
 
-   * `Apollo`，`Apollo-ECO`
-
-Note: 对应IPU功能列表中的`H2`或`H2V4`，QSDK V2.3.0及之后版本使用`Video Encoder`选中配置`h2 encode lib`中的`h2`或者`h2v4`
 
 ----
 ### 4.7 g1
@@ -1236,7 +1229,7 @@ H264硬件解码模块
 
 **模型**
 
-![](image/ipu/g1264.svg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/g1264.svg)
 
 **端口说明**
 
@@ -1250,7 +1243,7 @@ H264硬件解码模块
 
 **使用限制**
 
-   * `Apollo`
+ 
 
 ----
 ### 4.8 g2
@@ -1259,7 +1252,7 @@ H264硬件解码模块
 
 **模型**
 
- ![](image/ipu/g2.svg)
+ ![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/g2.svg)
 
 **端口说明**
 
@@ -1270,7 +1263,7 @@ H264硬件解码模块
 无
 **使用限制**
 
-* `Apollo`
+
 
 ----
 ### 4.9 h1jpeg
@@ -1279,7 +1272,7 @@ H264硬件解码模块
 
 **模型**
 
-![](image/ipu/h1jpeg.svg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/h1jpeg.svg)
 
 **端口说明**
 
@@ -1298,7 +1291,7 @@ H264硬件解码模块
 
 **使用限制**
 
-   * `Apollo`，`Apollo-2`
+   * `Q3F`
    * 支持最大分辨率：8192x8192
    * 支持最小分辨率：96x32
    * 输入数据宽度(stride)必须是16的倍数，高度必须是2的倍数
@@ -1310,7 +1303,7 @@ H264硬件解码模块
 
 **模型**
 
-![](image/ipu/jenc.svg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/jenc.svg)
 
 **端口说明**
 
@@ -1324,7 +1317,7 @@ H264硬件解码模块
 
 **使用限制**
 
-   * `Apollo-ECO`
+   * `Q3-ECO`
    * 支持最大分辨率：8176x8176
    * 支持最小分辨率：96x32
    * 输入数据宽度(stride)必须是16的倍数，高度必须是2的倍数
@@ -1336,7 +1329,7 @@ H264硬件解码模块
 
 **模型**
 
-![](image/ipu/ffvdec.svg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/ffvdec.svg)
 
 **端口说明**
 
@@ -1356,7 +1349,7 @@ H264硬件解码模块
 图片软解码模块，采用FFmpeg解码。目前只支持JPEG解码
 **模型**
 
-![](image/ipu/ffphoto.svg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/ffphoto.svg)
 
 **端口说明**
 
@@ -1371,34 +1364,7 @@ H264硬件解码模块
  -  -  -
 ### 4.13 pp
 **功能描述**
-用于图像后处理。可支持图像剪裁、旋转、颜色空间转换、图像放大/缩小、图像叠加、去交错等功能
 
-**模型**
-
-![](image/ipu/pp.svg)
-
-**端口说明**
-
-   * `in`  -  输入端口，支持数据类型NV12
-   * `ol0`  -  叠加图像输入端口0，支持数据类型RGBA8888
-   * `ol1` - 叠加图像输入端口1，支持数据类型RGBA8888
-   * `out` - 输出端口，支持数据类型NV12/RGBA8888（`ol0`或者`ol1`使能时必须是RGBA8888）
-
-**参数说明**
-
-   * `rotate`（可选） - 输入画面旋转配置。`“90”` - 画面向右旋转90度；`“180”` - 画面向右旋转180度；`“270”` - 画面向右旋转270度；`“H”` - 画面水平翻转；`“V”` - 画面垂直翻转。需要注意的是，旋转只针对输入图像，叠加图像不受影响
-
-**使用限制**
-
-   * `Apollo`
-   * 最大输出宽度 -  3*input_width
-   * 最大输出高度: 3*input_height  -  2
-   * 最小输出宽度/高度 -  1/70
-   * 不支持宽度放大，高度缩小，反之亦然
-   * 支持宽高放大不同倍数，或者缩小不同倍数
-   * 输入宽高16像素对齐
-   * 裁剪起始坐标16像素对齐，裁剪宽高8像素对齐
-   * 输出图像宽8像素对齐，高2像素对齐
 
 ----
 ### 4.14 marker
@@ -1407,7 +1373,7 @@ H264硬件解码模块
 
 **模型**
 
- ![](image/ipu/marker.svg)
+ ![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/marker.svg)
 
 **端口说明**
 
@@ -1429,7 +1395,7 @@ NOTE: marker的字库支持有`Freetype mode`、`Iconv mode`和`Grid data mode`�
 
 **模型**
 
- ![](image/ipu/ids.svg)
+ ![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/ids.svg)
 
 **端口说明**
 
@@ -1450,7 +1416,7 @@ NOTE: marker的字库支持有`Freetype mode`、`Iconv mode`和`Grid data mode`�
 
 **模型**
 
- ![](image/ipu/bufsync.svg)
+ ![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/bufsync.svg)
 
 **端口说明**
 
@@ -1470,7 +1436,7 @@ NOTE: marker的字库支持有`Freetype mode`、`Iconv mode`和`Grid data mode`�
 
 **模型**
 
- ![](image/ipu/dg-frame.svg)
+ ![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/dg-frame.svg)
 
 **端口说明**
 
@@ -1492,7 +1458,7 @@ NOTE: marker的字库支持有`Freetype mode`、`Iconv mode`和`Grid data mode`�
 
 **模型**
 
- ![](image/ipu/fodetv2.svg)
+ ![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/fodetv2.svg)
 
 **端口说明**
 
@@ -1527,7 +1493,7 @@ NOTE: marker的字库支持有`Freetype mode`、`Iconv mode`和`Grid data mode`�
 
 **模型**
 
- ![](image/ipu/vamovement.svg)
+ ![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/vamovement.svg)
 
 **端口说明**
 
@@ -1548,7 +1514,7 @@ NOTE: marker的字库支持有`Freetype mode`、`Iconv mode`和`Grid data mode`�
 
 **模型**
 
- ![](image/ipu/mvmovement.svg)
+ ![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/mvmovement.svg)
 
 **端口说明**
 
@@ -1558,7 +1524,7 @@ NOTE: marker的字库支持有`Freetype mode`、`Iconv mode`和`Grid data mode`�
 无
 **使用限制**
 
-   * `Apollo-2`
+   * `Q3F`
    * 必须配合`h1264`或`vencoder`一起使用，配合`vencoder`使用时"encode_type"必须是"h264"
 
 ----
@@ -1568,7 +1534,7 @@ NOTE: marker的字库支持有`Freetype mode`、`Iconv mode`和`Grid data mode`�
 
 **模型**
 
- ![](image/ipu/vaqrscanner.svg)
+ ![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/vaqrscanner.svg)
 
 **端口说明**
 
@@ -1586,7 +1552,7 @@ NOTE: marker的字库支持有`Freetype mode`、`Iconv mode`和`Grid data mode`�
 
 **模型**
 
- ![](image/ipu/swc.svg)
+ ![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/swc.svg)
 
 **端口说明**
 
@@ -1608,7 +1574,7 @@ NOTE: marker的字库支持有`Freetype mode`、`Iconv mode`和`Grid data mode`�
 
 **模型**
 
- ![](image/ipu/softlayer.svg)
+ ![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/softlayer.svg)
 
 **端口说明**
 
@@ -1630,7 +1596,7 @@ NOTE: marker的字库支持有`Freetype mode`、`Iconv mode`和`Grid data mode`�
 
 **模型**
 
- ![](image/ipu/filesink.svg)
+ ![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/filesink.svg)
 
 **端口说明**
 
@@ -1651,7 +1617,7 @@ NOTE: marker的字库支持有`Freetype mode`、`Iconv mode`和`Grid data mode`�
 
 **模型**
 
- ![](image/ipu/filesource.svg)
+ ![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/filesource.svg)
 
 **端口说明**
 
@@ -1672,7 +1638,7 @@ NOTE: marker的字库支持有`Freetype mode`、`Iconv mode`和`Grid data mode`�
 
 **模型**
 
- ![](image/ipu/v4l2.svg)
+ ![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/v4l2.svg)
 
 **端口说明**
 
@@ -1694,7 +1660,7 @@ NOTE: marker的字库支持有`Freetype mode`、`Iconv mode`和`Grid data mode`�
 
 **模型**
 
- ![](image/ipu/vencoder.svg)
+ ![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/vencoder.svg)
 
 **端口说明**
 
@@ -1736,7 +1702,7 @@ NOTE: marker的字库支持有`Freetype mode`、`Iconv mode`和`Grid data mode`�
    * 输出端口`mv`只有`encode_type`为`"h264"`时才存在
    * `mv_w``mv_h`只有`encode_type`为`"h264"`时才生效
 
-NOTE: 对应IPU功能列表中的`Video Encoder`，QSDK V2.3.0启用，如果编码格式为H264，需要开启子菜单选项`h1264`。如果编码格式为H265，`Apollo`开发板上需要开启子菜单选项`h2`，`Apollo-ECO`开发板上需要开启子菜单选项`h2v4`。`h1264`与`h2 encode lib`为`Video Encoder`子菜单选项，`h2`，`h2v4`，`NONE`为`h2 encoder lib`子菜单选项，`h1264`仅适用`Apollo`，`Apollo-2`，`h2`仅适用`Apollo`，`h2v4`仅适用`Apollo-ECO`
+NOTE: 对应IPU功能列表中的`Video Encoder`，QSDK V2.3.0启用，如果编码格式为H264，需要开启子菜单选项`h1264`。如果编码格式为H265，`Q3-ECO`开发板上需要开启子菜单选项`h2v4`。`h1264`与`h2 encode lib`为`Video Encoder`子菜单选项，`h2`，`h2v4`，`NONE`为`h2 encoder lib`子菜单选项，`h1264`仅适用`Q3F`，`h2v4`仅适用`Q3-ECO`
 
 ----
 ### 4.28 g1jdec
@@ -1745,7 +1711,7 @@ MJPEG硬件解码模块
 
 **模型**
 
-![](image/ipu/g1jdec.svg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/g1jdec.svg)
 
 **端口说明**
 
@@ -1756,7 +1722,7 @@ MJPEG硬件解码模块
 无
 **使用限制**
 
-   * `Apollo`
+  
 
 ----
 
@@ -1767,7 +1733,7 @@ MJPEG硬件解码模块
 
 **模型**
 
-![](image/ipu/dehaze.svg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/dehaze.svg)
 
 **端口说明**
 
@@ -1871,7 +1837,7 @@ Note:
 **示例**
 将显示`ids`从1080P切换到480P，此时显示画面将从1080P切换成480P
 
- ![](image/api/rebind.svg)
+ ![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/rebind.svg)
 
 ```cpp
 int s32Ret = 0;
@@ -3253,8 +3219,8 @@ int camera_create_and_fire_fcedata(const char *cam, cam_fcedata_param_t *fcedata
 输入鱼眼图像960x960，矫正模式选择垂直向下视角`FISHEYE_MODE_DOWNVIEW`，矫正范围选取经度10度到80度，纬度-45度到45度，展开成600x570
 `fisheye_radius`为-5表示，输入图像半径减少5，用于减少画面畸变，矫正效果
 
-![](image/api/fce-downscale.jpg)
-![](image/api/fce-downscale-correct.jpg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/fce-downscale.jpg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/fce-downscale-correct.jpg)
 
 
 ```cpp
@@ -3992,8 +3958,8 @@ typedef struct __cam_fisheye_correction_t
 * `fisheye_rotate_angle2` - 镜头的旋转角度
 * `debug_info` - 调试信息
 
-![](image/api/fce-anger.jpg)
-![](image/api/fce-anger-scope.jpg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/fce-anger.jpg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/fce-anger-scope.jpg)
 
 ---
 ### 6.2.22 cam_fcedata_param_t
@@ -4374,7 +4340,7 @@ Note: 关闭的端口必须是输出端口
 **示例**
 以双路编码为例，关闭`"enc-vga"`，此时仅`"enc_1080p"`一路在编码，再使能`"enc-vga"`
 
-![](image/path/dual-enc.svg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/dual-enc.svg)
 
 ```cpp
 int s32Ret;
@@ -5189,9 +5155,9 @@ struct v_rate_ctrl_info {
 * `idr_interval` - 编码时I帧间隔。取值范围[1，150]，缺省值为输入帧率
 * `hrd` - HRD功能使能开关。1 - 使能，0 - 关闭。缺省值为0
 * `hrd_cpbsize` - 使能HRD开关时，编码缓存区大小，建议大于2秒数据量，否则容易连续掉帧
-* `refresh_interval` - 智能P帧间隔，取值范围[0，idr_interval]，适用于`Apollo-2`
-* `mbrc` - 宏块级码率控制使能开关，1 - 使能，0 - 关闭。缺省值为0，适用于`Apollo-ECO`
-* `mb_qp_adjustment` - 宏块码率控制等级，范围[-8，7]，适用于`Apollo-2`
+* `refresh_interval` - 智能P帧间隔，取值范围[0，idr_interval]，适用于`Q3F`
+* `mbrc` - 宏块级码率控制使能开关，1 - 使能，0 - 关闭。缺省值为0，适用于`Q3-ECO`
+* `mb_qp_adjustment` - 宏块码率控制等级，范围[-8，7]，适用于`Q3F`
 * `fixqp` - 固定QP配置参数，参见[v_fixqp_info](main.md#7.2.7_v_fixqp_info)
 * `vbr` - VBR配置参数，参见[v_vbr_info](main.md#7.2.8_v_vbr_info)
 * `cbr` - CBR配置参数，参见[v_cbr_info](main.md#7.2.9_v_cbr_info)
@@ -5785,7 +5751,7 @@ struct font_attr {
 
 Note:
 `va_move_`开头的接口，采用直方图做运动检测。而`va_mv_`开头的接口，采用运动向量做运动检测
-`va_mv_`开头的接口仅用于`Apollo-2`
+`va_mv_`开头的接口仅用于`Q3F`
 
 ---
 ## 9.1 API
@@ -6451,10 +6417,10 @@ Context AE      AWB     HWAWB   TNMCurve    DayMode     MirrorMode  3DN
 
 | `ISP Context Info`参数 | 描述 |
 |-------------------------|-----------|
-| `Context` | ISP子系统的流处理上下文编号，一般情况为0，当使用`Apollo`的dual-sensor时会出现0/1编号，代表2个硬件上下文 |
+| `Context` | ISP子系统的流处理上下文编号，一般情况为0 |
 | `AE` | ISP的AE模块状态，Y - 使能， N - 关闭 |
 | `AWB` | ISP的AWB模块状态，Y - 使能， N - 关闭 |
-| `HWAWB` | ISP的硬件AWB模块状态，Y - 使能， N - 关闭， N/A - 不存在（`Apollo`/`Apollo-ECO`） |
+| `HWAWB` | ISP的硬件AWB模块状态，Y - 使能， N - 关闭， N/A - 不存在（`Q3-ECO`） |
 | `TNMCurve` | ToneMapping Curve调整方式，Dynamic - 动态调整曲线方式, Static - 静态调整曲线方式 |
 | `DayMode` | ISP当前场景模式，Day － 白天场景， Night － 夜晚场景 |
 | `MirrorMode` | ISP输出图像镜像状态，None - 没有镜像， H - 水平镜像， V - 垂直镜像， HV - 垂直水平镜像 |
