@@ -1,23 +1,6 @@
-QSDK Camera Sensor调试指南
-=============================
-
-### 适用产品
-
-| 类别 | 适用对象 |
-|---|
-| 软件版本 | `QSDK-V2.2.0` |
-| 芯片型号 | `Apollo` `Apollo-2` `Apollo-ECO` |
-
-
-### 修订记录
-
-| 修订说明 | 日期 | 作者 |
-|---|
-| 初版 | 2017/07/12 |Sam Zhou|
 ### 术语解释
 |术语|解释|
-|--|--|
-|QSDK|盈方微Apollo系列芯片软件开发套件|
+|-----------------|----------------------------------|
 |ISP|  Image Signal Processing|
 |IPU | Image Processing Units |
 |V2500|  盈方微Apollo系列ISP模块代号|
@@ -41,6 +24,8 @@ QSDK Camera Sensor调试指南
 |CRC|Cyclic Redundancy Check|
 |PMU|Power Manage Unit|
 |HAL|硬件抽象层|
+
+
 ----------
 ##1 概述
 Sensor作为一种图像输入器件，是将自然光信号转为电信号。由于不同的项目因应用需求不同，接入的Sensor也不同，所以调试与接入Sensor也是日常工作中经常碰到的，那么怎样在InfoTM QSDK中正确的接入新Sensor呢？ 本文的宗旨就是引导工程师正确的接入新的Sensor到QSDK中。
