@@ -3,8 +3,7 @@
 |-----------------|----------------------------------|
 |ISP|  Image Signal Processing|
 |IPU | Image Processing Units |
-|V2500|  盈方微Apollo系列ISP模块代号|
-|V2505|  盈方微Apollo-2，Apollo-ECO系列ISP模块代号|
+|V2505|  盈方微Q3F，Q3-ECO系列ISP模块代号|
 |DDK | ISP设备开发套件 |
 |ISPC| ISP Control library |
 |Felix| ISP Linux驱动名字|
@@ -27,13 +26,13 @@
 
 
 ----------
-##1 概述
+## 1 概述
 Sensor作为一种图像输入器件，是将自然光信号转为电信号。由于不同的项目因应用需求不同，接入的Sensor也不同，所以调试与接入Sensor也是日常工作中经常碰到的，那么怎样在InfoTM QSDK中正确的接入新Sensor呢？ 本文的宗旨就是引导工程师正确的接入新的Sensor到QSDK中。
 
 ---------
-##2 软件架构
+## 2 软件架构
 
-![](img/qsdk_camera_soft_structure.svg "camera software sketch")
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/qsdk_camera_soft_structure.svg "camera software sketch")
 
 |结构|描述|
 |---|----|
@@ -44,13 +43,13 @@ Sensor作为一种图像输入器件，是将自然光信号转为电信号。�
 |ddk_sensor.ko|Sensor的内核驱动，主要是给Sensor提供电压，时钟和上电时序|
 
 -------------
-##3 系统流程
+## 3 系统流程
 如下图所示，`videoboxd`运行时，`videoboxd`从**/root/.videobox/**系统目录中读取运行时需要的IPU模块配置文件，从**/root/.ispddk/**系统目录中读取Sensor，ISP的配置文件，通过`/dev/imgfelix0`获取视频数据，通过`/dev/ddk_sensor0`来控制ISP。
 
-![](img/camera_system_follow.svg "camera system follow")
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/camera_system_follow.svg "camera system follow")
 
 --------------
-##4 添加支持Sensor
+## 4 添加支持Sensor
 QSDK中已经支持了一些Sensor，如果在项目中使用这些Sensor，可按照4.1中的步骤选用这些Sensor，以下为QSDK中默认支持的Sensor。
 
 |Sensor|分辨率|Lane数|帧数|
@@ -63,8 +62,8 @@ QSDK中已经支持了一些Sensor，如果在项目中使用这些Sensor，可�
 |IMX179 MIPI|2624x2624|4|30|
 |SC2135 DVP|1920x1080||30|
 ------------
-###4.1 添加单Sensor
-盈方微Apollo系列芯片支持多个物理Sensor的同时输入，一般应用场景只需要一个Sensor，所谓单Sensor就是指只有一个物理Sensor作为图像输入。假如有产品项目名为example，要用到单AR330 MIPI Sensor，怎样将其添加到项目example中呢。
+### 4.1 添加单Sensor
+盈方微Q3系列芯片支持多个物理Sensor的同时输入，一般应用场景只需要一个Sensor，所谓单Sensor就是指只有一个物理Sensor作为图像输入。假如有产品项目名为example，要用到单AR330 MIPI Sensor，怎样将其添加到项目example中呢。
 #### Step 1: 建立Sensor配置文件目录
 建立example项目目录后，在项目目录下建立Sensor配置文件目录。
 ```
@@ -169,7 +168,7 @@ $ make
 ```
 ----------------
 ###4.2  添加双Sensor
-双Sensor是指同时有两个Sensor作为图像输入，如双目全景的应用产品形态时，需要前后两个物理Sensor时，这时就需要添加两个Sensor。使用Apollo-2双Sensor时，需要外接一个双Sensor的图像拼接芯片，Apollo-ECO有双Sensor的图像拼接功能，但Sensor的接口必需都为DVP 接口，Apollo没有限制。还是以产品项目名为example为例，Apollo为平台，说明怎样将AR330 MIPI，AR330 DVP Sensor添加到项目example中。
+双Sensor是指同时有两个Sensor作为图像输入，如双目全景的应用产品形态时，需要前后两个物理Sensor时，这时就需要添加两个Sensor。使用Q3F双Sensor时，需要外接一个双Sensor的图像拼接芯片，Q3-ECO有双Sensor的图像拼接功能，但Sensor的接口必需都为DVP 接口。还是以产品项目名为example为例，说明怎样将AR330 MIPI，AR330 DVP Sensor添加到项目example中。
 #### Step 1: 建立Sensor配置文件目录
 如同单Sensor，建立example项目目录后，需在项目目录下建立Sensor配置文件目录。
 ```
@@ -249,11 +248,11 @@ x   default
 $ make
 ```
 -------------------
-##5 添加新Sensor
+## 5 添加新Sensor
 当需要添加新的Sensor到QSDK中，除了要按第4章来将Sensor的配置文件加入到对应的项目目录中外，还需要实现相应的Sensor API。
 
 ---------------
-###5.1 `hlibcamsensor`结构
+### 5.1 `hlibcamsensor`结构
 QSDK将每个Sensor的API的实现代码全部统一放在**hlibcamsensor**的目录中，由**hlibispv2500**和**hlibispv2505**共用一套Sensor API代码，便于维护和添加新Sensor，如下所示为**hlibcamsensor**的代码结构。
 ```cpp
 hlibcamsensor
@@ -308,7 +307,7 @@ hlibcamsensor
     └── v2505
 ```
 --------------------------
-###5.2 添加Sensor代码
+### 5.2 添加Sensor代码
 
 #### Step 1: 创建Sensor的API实现文件
 Sensor API的实现代码文件需放在hlibcamsensor/sensors目录下，若添加的Sensor为DVP接口可以从**ar330dvp.c**复制一份并改名为**xxxdvp.c**，MIPI接口则可以从**ar330mipi.c**复制一份改名为**xxxmipi.c**。
@@ -579,7 +578,7 @@ Sensor `mode`可设置也可不设置，不设置时默认使用0。下表描述
 |无|不|需要|
 
 -----------------------
-###5.3 编译代码生成镜像
+### 5.3 编译代码生成镜像
 当修改或添加了**hlibcamsensor**的源文件后，需要做以下步聚编译，才能使当前改动在Videobox中生效。
 ```bash
 $ make hlibcamsensor-rebuild
@@ -587,8 +586,8 @@ $ make
 ```
 
 -------------------------
-##6 DVP Sensor的调试
-###6.1 正确上电
+## 6 DVP Sensor的调试
+### 6.1 正确上电
 Sensor模组作为一种电气件，若想让其正常工作，需仔细根据Sensor的DataSheet，硬件电路图，正确的提供电压，时钟，上电时序。只有这些正确了后，才能保证能正确的通过I2C来配置Sensor的寄存器，让它出图。一般DVP Sensor需要配置的电气特性如下表，不同Sensor略有不同。
 
 | 需要设置项| 描述 |
@@ -602,7 +601,7 @@ Sensor模组作为一种电气件，若想让其正常工作，需仔细根据Se
 
 QSDK中是通过配置Sensor Item文件来配置其电压大小，时钟频率，上电时序。Item文件的每个项具体含义请参考[附录9.2](./main.md#9.2._Sensor_Item配置说明)，以AR330 Sensor举例，AR330 Sensor的上电时序图如下。
 
-![](img/power_up.svg "power up")
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/power_up.svg "power up")
 
 对应的Item文件配置如下。
 ```bash
@@ -619,15 +618,15 @@ sensor0.bootup.seq.3      reset.gpio.44.20
 
 ```
 --------------------
-###6.2  出图像调试
+### 6.2  出图像调试
 调试新Sensor时，出图像是调试的关键一步，出图像了说明Sensor初始化成功，并且整个软件流程也调通了。为了简化出图像的调试流程，需让Sensor先输出Test Pattern的彩条测试图样，这样可以不用实现设置曝光时间和增益函数。否则需要先实现这两个函数才能看到正常的图像输出。若在调试出图像过程中，Sensor没有输出Test Pattern图像，这时候需要用示波器测量Sensor的HSYNC和VSYNC信号，确认Sensor有没有信号输出。如果没有则说明Sensor的配置有问题，或者是Sensor的数据流控是否打开。
 
 Sensor正常出图时，其输出的DVP的时序图如下(主要输出波形有VSYNC(帧同步)， HSYNC/HREF(行同步/行有效)， PCLK(Pixel Clock))。
 
-![](img/DVP_Signal.svg "Signal")
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/DVP_Signal.svg "Signal")
 
 -----------------
-###6.3 错误调试
+### 6.3 错误调试
 **I2C报错**
 
 ```bash
@@ -656,10 +655,10 @@ ERROR [ISPC_CAMERA]: acquireShot()[2017-07-15 16:27:55:299]:1239 Unable to get s
 - 检查HSYNC，VSYNC，PCLK的极性
 
 ------------
-###6.4 特殊DVP时序的调试
+### 6.4 特殊DVP时序的调试
 有些Sensor输出的VSYNC, HSYNC开始的延时时间非常的短，几乎同时到达，其信号特点如下图所示。
 
-![](img/Special_Signal.svg "Signal")
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/Special_Signal.svg "Signal")
 
 当遇到这类Sensor时，需要将Sensor一帧内的前几行丢掉以使VSYNC与HSYNC之间有一定的延时时间，这样ISP才能正常的采集到完整的一帧数据，具体解决思路为Sensor的输出图像大小要大于ISP的接收图像大小，在ISP的输入端Crop掉前几行。
 
@@ -672,16 +671,16 @@ IIF_CAP_RECT_BR              1919 1087
 ```
 下图显示出`TL`设置0 0与`TL`设置0 8时ISP输入端图像有效区域的部分(白色区域为有效部分)
 
-![](img/TL.svg "Top and Left")
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/TL.svg "Top and Left")
 
 ------------
-###6.5 DVP Wrapper调试
+### 6.5 DVP Wrapper调试
 
 **Wrapper 功能说明**
 
-DVP Wrapper是针对DVP接口的Sensor，对其输出图像做裁减，主要是为了让InfoTM系列芯片支持更多的DVP接口的Sensor。当DVP Sensor的输出图像数据带**Sync Code**的同步数据时，如Sony IMX322的Sensor，就需要用到DVP Wrapper将**Sync Code**裁减掉。当使用Wrapper后，给后端ISP的输入就是Wrapper的输出；不使用时，ISP的输入为Sensor的直接输出。`Apollo-2`，`Apollo-ECO`才有Wrapper功能。使用Wrapper和不使用Wrapper在`Apollo-2`，`Apollo-ECO`中的数据流程如下。
+DVP Wrapper是针对DVP接口的Sensor，对其输出图像做裁减，主要是为了让InfoTM系列芯片支持更多的DVP接口的Sensor。当DVP Sensor的输出图像数据带**Sync Code**的同步数据时，如Sony IMX322的Sensor，就需要用到DVP Wrapper将**Sync Code**裁减掉。当使用Wrapper后，给后端ISP的输入就是Wrapper的输出；不使用时，ISP的输入为Sensor的直接输出。`Q3F`，`Q3-ECO`才有Wrapper功能。使用Wrapper和不使用Wrapper在`Q3F`，`Q3-ECO`中的数据流程如下。
 
-![](img/DVP_Wraper.svg "camera DVP Wrapper")
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/DVP_Wraper.svg "camera DVP Wrapper")
 
 **配置DVP Wrapper**
 
@@ -689,22 +688,22 @@ DVP Wrapper是针对DVP接口的Sensor，对其输出图像做裁减，主要是
 
 |Item|值|说明|
 |--|--|--|
-| `sensor0.wraper.use` |  `0` | 是否使用DVP的Wrapper功能。<br><br>`1` - 使用 <br>`0` - 不使用 <br><br>只针对`Apollo-2`和`Apollo-ECO`有效|
+| `sensor0.wraper.use` |  `0` | 是否使用DVP的Wrapper功能。<br><br>`1` - 使用 <br>`0` - 不使用 <br><br>只针对`Q3F`和`Q3-ECO`有效|
 | `sensor0.wraper.width`  |  `1920` | DVP Wrapper输出宽度 |
 | `sensor0.wraper.height`  | `1080` | DVP Wrapper输出高度 |
 | `sensor0.wraper.hdelay`  |  `114` | DVP Wrapper hdelay值，即图像左上角水平方向的起点 |
 | `sensor0.wraper.vdelay`  |  `12` | DVP Wrapper vdelay值，即图像左上角垂直方向的起点 |
 
 -----------
-##7 MIPI Sensor调试
-###7.1 MIPI接口描述
+## 7 MIPI Sensor调试
+### 7.1 MIPI接口描述
 
 MIPI接口指遵守MIPI CSI-2.0协议数据传输接口，分为Master端和Slave端。通常Sensor作为Master端设备主动发送时钟和图像数据，而CSI Controller作为Slave端按照Master的时钟来接收图像数据。MIPI接口的时钟与数据都为差分信号，其中时钟只有一个，数据可以有多个Lanes，应用上可以根据不同的传输数据量多少来配置不同的Lane数，MIPI接口示意图如下。
 
- ![](img/mipi_framework.png "csi interface")
+ ![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/mipi_framework.png "csi interface")
 
 -------------
-###7.2 MIPI Sensor接入
+### 7.2 MIPI Sensor接入
 MIPI Sensor的接入和[第6章](./main.md#6_DVP_Sensor的调试)DVP Sensor接入步骤一样，首先要正确的上电，其次就是出图像调试。需要注意的是，MIPI正确上电的Item配置与DVP配置略有不同，以AR330 MIPI Sensor为例Item配置如下，其中加粗的Item为与DVP不同之处。
 
 <pre><code><strong>sensor0.interface        mipi</strong>
@@ -721,7 +720,7 @@ sensor0.bootup.seq.3     reset.gpio.44.20
 </code></pre>
 
 --------------
-###7.3 MIPI错误调试
+### 7.3 MIPI错误调试
 若Sensor与CSI Controller之间数据传输信号同步出现问题时，CSI Controller会发生MIPI CRC或ECC Error，此时QSDK会打印以下信息。
 
 ```bash
@@ -746,7 +745,7 @@ ERROR [CI_API]: IMG_PipelineAcquireBuffer():587 Failed to acquire a buffer (retu
 下面几小节将对上面检查内容做具体说明。
 
 ---------
-####7.3.1 PCB设计要求
+#### 7.3.1 PCB设计要求
 MIPI差分信号对硬件布线要求比较高，为了保证MIPI信号的完整性，设计MIPI模块PCB时需注意如下几点。
 
 1. MIPI差分信号阻抗控制在100ohm +/-10%。
@@ -757,7 +756,7 @@ MIPI差分信号对硬件布线要求比较高，为了保证MIPI信号的完整
 1. 所有MIPI信号远离干扰源，远离高频信号。
 
 -----------------
-####7.3.2 ISP时钟要求
+#### 7.3.2 ISP时钟要求
 
 **ISP时钟大小要求**
 ISP时钟与Sensor输出MIPI时钟需满足以下关系。
@@ -780,7 +779,7 @@ $ mount –t debugfs none /mnt
 $ cat /mnt/clk/clk_summary
 ```
 --------------
-####7.3.3 CSI Controller时钟配置
+#### 7.3.3 CSI Controller时钟配置
 **确认Sensor输出MIPI时钟**
 用示波器差分探头连接Sensor的CLKN/CLKP，确认Sensor的输出MIPI Clock为多少。
 **确认CSI Controller时钟大小**
@@ -813,7 +812,7 @@ imager=0
 sensor0.csi  lanes.1.freq.384
 ```
 ------------------
-####7.3.4 确认CSI Controller配置
+#### 7.3.4 确认CSI Controller配置
 在调试中还需要确认CSI Controller的配置是否正确，CSI Controller端是否报错，查看配置信息的方法与确认CSI Controller时钟方法一样。
 ```
 cat sys/class/misc/ddk_sensor/sensor_info
@@ -846,10 +845,10 @@ CSI_REG_OFFSET24 =[0x1701]
 ```
 
 -----------------
-####7.3.5 Sensor HS-PREPARE配置
+#### 7.3.5 Sensor HS-PREPARE配置
 MIPI PHY从Low-Power模试进入到High-Speed模式时有一定时序，如下为进入High-Speed模式时序示意图。
 
- ![](img/mipi_hs_seq.png "mipi high mode timing")
+ ![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/mipi_hs_seq.png "mipi high mode timing")
 
 MIPI协议规定HS-PREPARE需满足以下约束。
 ```
@@ -862,17 +861,17 @@ Note:
 **确认HS-PREPARE时间**
 当Sensor输出的HS-PREPARE不符合MIPI协议规定范围时，MIPI CSI Controller会产生CRC错误，这时需要用示波器测量出HS-PREPARE的时间，HS-PREPARE波形图参见下图`BX`与`AX`之间的时间。
 
- ![](img/mipi_hsprepare.png "mipi hs prepare timing")
+ ![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/mipi_hsprepare.png "mipi hs prepare timing")
 
 **调整HS-PREPARE时间**
 当通过示波器测量的HS-PREPARE时间不在MIPI协议规定范围时，需要阅读Sensor DataSheet查看HS-PREPARE的寄存器，并调整此寄存器的值，使HS-PREPARE时间在约束的范围内。
 
 -------------
-##8 Sensor API说明
+## 8 Sensor API说明
 Sensor API作为Sensor的HAL，向上提供API给DDK的Sensor类使用，向下映射到每个Sensor的具体API的实现。添加新的Sensor时，主要工作就是实现新Sensor对应的HAL的每个API。
 
 --------------
-###8.1 Sensor API列表
+### 8.1 Sensor API列表
 下表列出了Sensor API，并描述了哪些API可不必实现，哪些建议实现，而哪些必需实现的。所谓必需实现，就是如果不实现会影响到Sensor正常输出图像，所谓建议实现，就是最好实现，不实现也不影响正常输出图像。
 
 |API|实现|
@@ -899,9 +898,9 @@ Sensor API作为Sensor的HAL，向上提供API给DDK的Sensor类使用，向下�
 |`UpdateSensorWBGain()`|可不必实现|
 
 -------------------------
-###8.2 API 说明
+### 8.2 API 说明
 
-####8.2.1 GetMode()
+#### 8.2.1 GetMode()
 
 ```
 IMG_RESULT (*GetMode)(SENSOR_HANDLE hHandle, IMG_UINT16 nIndex, SENSOR_MODE *psModes);
@@ -933,7 +932,7 @@ static IMG_RESULT AR330MIPI_GetMode(SENSOR_HANDLE hHandle, IMG_UINT16 nIndex,
 }
 ```
 -----------------------
-####8.2.2 GetState()
+#### 8.2.2 GetState()
 
 ```
 IMG_RESULT (*GetState)(SENSOR_HANDLE hHandle, SENSOR_STATUS *psStatus);
@@ -971,7 +970,7 @@ static IMG_RESULT AR330MIPI_GetState(SENSOR_HANDLE hHandle, SENSOR_STATUS *psSta
 }
 ```
 ---------------------------
-####8.2.2 SetMode()
+#### 8.2.2 SetMode()
 
 ```
 IMG_RESULT (*SetMode)(SENSOR_HANDLE hHandle, IMG_UINT16 nMode, IMG_UINT8 ui8Flipping);
@@ -989,7 +988,7 @@ IMG_RESULT (*SetMode)(SENSOR_HANDLE hHandle, IMG_UINT16 nMode, IMG_UINT8 ui8Flip
 该函数失败返回非0，成功返回0。
 
 ---------------------------
-####8.2.3 Enable()
+#### 8.2.3 Enable()
 
 ```
 IMG_RESULT (*Enable)(SENSOR_HANDLE hHandle);
@@ -1009,7 +1008,7 @@ IMG_RESULT (*Enable)(SENSOR_HANDLE hHandle);
 * 使能Sensor输出数据要在使能ISP之后，否则，ISP就会报错。
 
 ---------------------------
-####8.2.4 Disable()
+#### 8.2.4 Disable()
 
 ```
 IMG_RESULT (*Disable)(SENSOR_HANDLE hHandle);
@@ -1056,7 +1055,7 @@ static IMG_RESULT AR330MIPI_DisableSensor(SENSOR_HANDLE hHandle)
 ```
 
 ---------------------------
-####8.2.5 Destroy()
+#### 8.2.5 Destroy()
 
 ```
 IMG_RESULT (*Destroy)(SENSOR_HANDLE hHandle);
@@ -1072,7 +1071,7 @@ IMG_RESULT (*Destroy)(SENSOR_HANDLE hHandle);
 该函数失败返回非0，成功返回0。
 
 ---------------------------
-####8.2.6 GetInfo()
+#### 8.2.6 GetInfo()
 
 ```
 IMG_RESULT (*GetInfo)(SENSOR_HANDLE hHandle, SENSOR_INFO *psInfo);
@@ -1089,7 +1088,7 @@ IMG_RESULT (*GetInfo)(SENSOR_HANDLE hHandle, SENSOR_INFO *psInfo);
 该函数失败返回非0，成功返回0。
 
 ---------------------------
-####8.2.7 GetGainRange()
+#### 8.2.7 GetGainRange()
 
 ```
 IMG_RESULT (*GetGainRange)(SENSOR_HANDLE hHandle, double *pflMin, double *pflMax, IMG_UINT8 *puiContexts);
@@ -1106,7 +1105,7 @@ IMG_RESULT (*GetGainRange)(SENSOR_HANDLE hHandle, double *pflMin, double *pflMax
 该函数失败返回非0，成功返回0。
 
 ---------------------------
-####8.2.8 GetGainRange()
+#### 8.2.8 GetGainRange()
 
 ```
 IMG_RESULT (*GetGainRange)(SENSOR_HANDLE hHandle, double *pflMin, double *pflMax, IMG_UINT8 *puiContexts);
@@ -1123,7 +1122,7 @@ IMG_RESULT (*GetGainRange)(SENSOR_HANDLE hHandle, double *pflMin, double *pflMax
 该函数失败返回非0，成功返回0。
 
 ---------------------------
-####8.2.9 GetCurrentGain()
+#### 8.2.9 GetCurrentGain()
 
 ```
 IMG_RESULT (*GetCurrentGain)(SENSOR_HANDLE hHandle, double *pflCurrent, IMG_UINT8 ui8Context);
@@ -1141,7 +1140,7 @@ IMG_RESULT (*GetCurrentGain)(SENSOR_HANDLE hHandle, double *pflCurrent, IMG_UINT
 该函数失败返回非0，成功返回0。
 
 ---------------------------
-####8.2.10 SetGain()
+#### 8.2.10 SetGain()
 
 ```
 IMG_RESULT (*SetGain)(SENSOR_HANDLE hHandle, double flGain, IMG_UINT8 ui8Context);
@@ -1159,7 +1158,7 @@ IMG_RESULT (*SetGain)(SENSOR_HANDLE hHandle, double flGain, IMG_UINT8 ui8Context
 该函数失败返回非0，成功返回0。
 
 ---------------------------
-####8.2.11 GetExposureRange()
+#### 8.2.11 GetExposureRange()
 
 ```
 IMG_RESULT (*GetExposureRange)(SENSOR_HANDLE hHandle, IMG_UINT32 *pui32Min, IMG_UINT32 *pui32Max, IMG_UINT8 *pui8Contexts);
@@ -1178,7 +1177,7 @@ IMG_RESULT (*GetExposureRange)(SENSOR_HANDLE hHandle, IMG_UINT32 *pui32Min, IMG_
 该函数失败返回非0，成功返回0。
 
 ---------------------------
-####8.2.12 GetExposure()
+#### 8.2.12 GetExposure()
 
 ```
 IMG_RESULT (*GetExposure)(SENSOR_HANDLE hHandle, IMG_UINT32 *pui32Exposure, IMG_UINT8 ui8Context);
@@ -1196,7 +1195,7 @@ IMG_RESULT (*GetExposure)(SENSOR_HANDLE hHandle, IMG_UINT32 *pui32Exposure, IMG_
 该函数失败返回非0，成功返回0。
 
 ---------------------------
-####8.2.13 SetExposure()
+#### 8.2.13 SetExposure()
 
 ```
 IMG_RESULT (*SetExposure)(SENSOR_HANDLE hHandle, IMG_UINT32 ui32Exposure, IMG_UINT8 ui8Context);
@@ -1214,7 +1213,7 @@ IMG_RESULT (*SetExposure)(SENSOR_HANDLE hHandle, IMG_UINT32 ui32Exposure, IMG_UI
 该函数失败返回非0，成功返回0。
 
 ---------------------------
-####8.2.14 SetGainAndExposure()
+#### 8.2.14 SetGainAndExposure()
 
 ```
 IMG_RESULT (*SetGainAndExposure)(SENSOR_HANDLE hHandle, double flGain, IMG_UINT32 ui32Exposure, IMG_UINT8 ui8Context);
@@ -1233,7 +1232,7 @@ IMG_RESULT (*SetGainAndExposure)(SENSOR_HANDLE hHandle, double flGain, IMG_UINT3
 该函数失败返回非0，成功返回0。
 
 ---------------------------
-####8.2.15 SetFPS()
+#### 8.2.15 SetFPS()
 
 ```
 IMG_RESULT (*SetFPS)(SENSOR_HANDLE hHandle, double fps);
@@ -1250,7 +1249,7 @@ IMG_RESULT (*SetFPS)(SENSOR_HANDLE hHandle, double fps);
 该函数失败返回非0，成功返回0。
 
 ---------------------------
-####8.2.16 Reset()
+#### 8.2.16 Reset()
 
 ```
 IMG_RESULT (*Reset)(SENSOR_HANDLE hHandle);
@@ -1266,7 +1265,7 @@ IMG_RESULT (*Reset)(SENSOR_HANDLE hHandle);
 该函数失败返回非0，成功返回0。
 
 ---------------------------
-####8.2.17 SetFlipMirror()
+#### 8.2.17 SetFlipMirror()
 
 ```
  IMG_RESULT (*SetFlipMirror)(SENSOR_HANDLE hHandle, IMG_UINT8 flag);
@@ -1283,7 +1282,7 @@ IMG_RESULT (*Reset)(SENSOR_HANDLE hHandle);
 该函数失败返回非0，成功返回0。
 
 ---------------------------
-####8.2.18 ReadSensorCalibrationData()
+#### 8.2.18 ReadSensorCalibrationData()
 
 ```
 IMG_UINT8* (*ReadSensorCalibrationData)(SENSOR_HANDLE hHandle, int sensor_index, IMG_FLOAT awb_convert_gain, IMG_UINT16* otp_calibration_version);
@@ -1302,7 +1301,7 @@ IMG_UINT8* (*ReadSensorCalibrationData)(SENSOR_HANDLE hHandle, int sensor_index,
 该函数失败返回`NULL`，成功返回OTP数据首地址。
 
 ---------------------------
-####8.2.19 ReadSensorCalibrationData()
+#### 8.2.19 ReadSensorCalibrationData()
 
 ```
 IMG_UINT8* (*ReadSensorCalibrationVersion)(SENSOR_HANDLE hHandle, int sensor_index, IMG_UINT16* otp_calibration_version);
@@ -1321,7 +1320,7 @@ IMG_UINT8* (*ReadSensorCalibrationVersion)(SENSOR_HANDLE hHandle, int sensor_ind
 
 
 ---------------------------
-####8.2.20 UpdateSensorWBGain()
+#### 8.2.20 UpdateSensorWBGain()
 
 ```
 IMG_RESULT (*UpdateSensorWBGain)(SENSOR_HANDLE hHandle, IMG_FLOAT awb_convert_gain);
@@ -1338,8 +1337,8 @@ IMG_RESULT (*UpdateSensorWBGain)(SENSOR_HANDLE hHandle, IMG_FLOAT awb_convert_ga
 该函数失败返回非0，成功返回0。
 
 ----------
-##9 附录
-###9.1 配置文件说明
+## 9 附录
+### 9.1 配置文件说明
 **配置文件作用**
 
 不同的项目，需要的Sensor不同，即使在不同项目中用同一个Sensor，其初始化配置，ISP的配置也不相同。为了解决这个不同项目的兼容性问题，QSDK使用配置文件，下表描述了一个项目需要的配置文件有哪些。
@@ -1430,7 +1429,7 @@ isp
 Note:
 1. `sensor0`为第一个Sensor的配置，`sensor1`为第二个Sensor的配置。
 
-###9.2 Sensor Item配置说明
+### 9.2 Sensor Item配置说明
 不同的Sensor的需要的电压，上电时序也不。如Sensor AR330需提供1.8V的IOVDD电压，而OV4689需提供的IOVDD电压为1.2V。而对于不同平台来说，连接Sensor的硬件引脚也不同。为了描述这些特性，QSDK使用Item文件来抽象。若项目中有两个Sensor，则**Sensor0.itm** 为第一个Sensor的Item文件，**Sensor1.itm** 为第二个Sensor的Item文件，具体的Sensor Item的含义如下表。
 
 |Item名称|值|含义|
@@ -1438,13 +1437,13 @@ Note:
 | `sensor0.interface`   |`mipi`| Sensor接口类型。   <br><br>`mipi` - MIPI接口   <br>`dvp` - DVP接口   <br>`camif` - CAMIF接口    <br>`camif-csi` - MIPI转CAMIF接口|
 | `sensor0.name`   |`ar330mipi` | Sensor名字。<br><br>需与**system/hlibcamsensor/include/sensors/sensor_name.h**定义的名字一致|
 | `sensor0.mclk`     |`24000000`| Sensor输入时钟值。|
-| `sensor0.imager`   |`0`|  ISP输入接口选择。 <br><br>对于`Apollo`：<br>`0` - MIPI0接口 <br>`1` - MIPI1接口 <br>`2` - DVP接口 <br><br>对于`Apollo-2` `Apollo-ECO`： <br>`0` - MIPI接口 <br>`1` - DVP接口 <br><br>当`sensor0.interface`为`camif-csi`时，imager的第0位用来表示invvsync，帧同步信号反转，第1位用来表示invhref，行同步信号反转|
+| `sensor0.imager`   |`0`|  ISP输入接口选择。 <br><br>对于`Q3F` `Q3-ECO`： <br>`0` - MIPI接口 <br>`1` - DVP接口 <br><br>当`sensor0.interface`为`camif-csi`时，imager的第0位用来表示invvsync，帧同步信号反转，第1位用来表示invhref，行同步信号反转|
 | `sensor0.i2c`   | `chn.3.addr.32` | Sensor的I2C通道与地址，注意此地址为十进制地址，且地址不需要右移一位 |
 | `sensor0.csi`   |`lanes.1.freq.384`|MIPI Sensor的Lanes数, CSI物理PHY的适配频率大小|
 | `sensor0.mode` | `0`| 不同的`mode`对应不同的Sensor配置。<br><br>当`sensor0.interface`为`camif-csi`时，`mode`为MIPI传输的数据类型，可选：`Raw10`, `Raw12`, `YUV` |
 | `sensor0.mipi_pixclk` |  `100000000` |MIPI PHY Pixel Clock大小。<br><br>当`sensor0.interface`为`camif-csi`时需要根据Sensor输出的Pixel Clock来配置|
 | `sensor0.mclk.src` |  `imap-clk1` |Sensor输入Clock源，名字需与**kernel/arch/arm/xxx/clk.c**中定义一致|
-| `sensor0.wraper.use` |  `0` | 是否使用DVP的Wrapper功能。<br><br>`1` - 使用 <br>`0` - 不使用 <br><br>只针对`Apollo-2`和`Apollo-ECO`有效|
+| `sensor0.wraper.use` |  `0` | 是否使用DVP的Wrapper功能。<br><br>`1` - 使用 <br>`0` - 不使用 <br><br>只针对`Q3F`和`Q3-ECO`有效|
 | `sensor0.wraper.width`  |  `1920` | DVP Wrapper输出宽度 |
 | `sensor0.wraper.height`  | `1080` | DVP Wrapper输出高度 |
 | `sensor0.wraper.hdelay`  |  `114` | DVP Wrapper hdelay值，即图像左上角水平方向的起点 |
@@ -1460,7 +1459,7 @@ Note:
 1. Sensor Item的解析是由Sensor的驱动自动解析的，添加新的Sensor时不用关心怎么解析它，只需按照相应的含义配置正确就可以了。
 2. Sensor0 Item以sensor0开头，Sensor1 Item以sensor1开头，类推。
 
-###9.3 Sensor配置文件说明
+### 9.3 Sensor配置文件说明
 **sensor0-config.txt**为Sensor的初始化配置文件，当调试Sensor时，需要修改Sensor配置可直接修改此文件即可，目前其格式支持两种形式。
 
 |表示 | 值 |
@@ -1522,10 +1521,10 @@ Note:
 2. 每行中可以有空格，或注释，不能又其它的字符，注释用`//`表示。
 3. `w`，`h`为属性，其它的行为I2C地址与值，每一行对应Sensor的寄存器的地址与值，必须用`0x`的十六进制表示。
 
-###9.4 MIPI UI定义
+### 9.4 MIPI UI定义
 `UI`表示传输1 Bit数据需要的时间大小，如下图
 
- ![](img/mipi_ui.png "mipi ui timing")
+ ![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/mipi_ui.png "mipi ui timing")
 
 **举例**
 若`MIPI_CLK` = 160M时，每个Lane的Bit速率为2 x `MIPI_CLK` = 320Mbps，此时
