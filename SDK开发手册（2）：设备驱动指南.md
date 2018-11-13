@@ -1,23 +1,6 @@
-# QSDK设备驱动指南
-
-### 适用产品
-
-| 类别 | 适用对象 |
-|---|
-| 软件版本 | `QSDK-V2.2.0` |
-| 芯片型号 | `Apollo` `Apollo-2` `Apollo-ECO` |
-
-### 修订记录
-
-| 修订说明 | 日期 | 作者 |
-|---|
-| 初版 | 2017/08/25 | Bob Yang |
-
 ### 术语解释
-
 |  术语   |                                           解释                                           |
 | ------- | ---------------------------------------------------------------------------------------- |
-| SDK     | Software Development Kit，软件开发工具包                                                 |
 | API     | Aplication Program Interface，应用程序接口                                               |
 | IO复用  | 全称应该是GPIO引脚复用，指的是芯片内置设备是与IO口共用引出管脚（不同的功能对应同一管脚） |
 | PLL     | Phase Looked Loop 锁相环                                                                 |
@@ -40,7 +23,7 @@
 
 ----
 ## 1 总体概述
-本文主要描述了如何使用QSDK代码包来调试设备驱动，这些设备包括Clock，GPIO，ADC，PWM，IIC，Power，SDIO，DPMU，Audio，USB。因为`Apollo` `Apollo-2` `Apollo-ECO`三个芯片（以下这三个芯片会统称为`芯片`）上的这些设备非常相似，所以下文中会主要以`Apollo-2`芯片为例来说明这些设备的驱动调试，有较大区别的地方会特别指出。
+本文主要描述了如何使用SDK代码包来调试设备驱动，这些设备包括Clock，GPIO，ADC，PWM，IIC，Power，SDIO，DPMU，Audio，USB。因为`Q3F` `Q3-ECO`三个芯片（以下这些芯片会统称为`芯片`）上的这些设备非常相似，所以下文中会主要以`Q3F`芯片为例来说明这些设备的驱动调试，有较大区别的地方会特别指出。
 
 ----
 ## 2 Clock
@@ -49,26 +32,25 @@
 ----
 ## 2.1 驱动架构
 
-![clock_driver_frame](clock_driver_frame.svg)
+![clock_driver_frame](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/clock_driver_frame.svg)
 
 **Clock驱动**为**Clock Core**实现各总线和设备Clock硬件配置细节，这样**设备驱动**就可以向**Clock Core**申请和注册该设备对应的Clock配置，然后**Clock Core**通过**clk_ops**系统生成**Clock DebugFS**，以便查看和调试设备的Clock配置。
 
 ----
 ## 2.2 代码文件
-芯片的Clock驱动文件如下，本章节会以`Apollo-2`芯片对应的驱动文件为例
+芯片的Clock驱动文件如下，本章节会以`Q3F`芯片对应的驱动文件为例
 
 |                   文件名                    |              说明               |
 | ------------------------------------------- | ------------------------------- |
-| **kernel/drivers/infotm/apollo/clk/clk.c**  | `Apollo`芯片对应的Clock驱动     |
-| **kernel/drivers/infotm/q3f/clk/clk.c**     | `Apollo-2`芯片对应的Clock驱动   |
-| **kernel/drivers/infotm/apollo3/clk/clk.c** | `Apollo-ECO`芯片对应的Clock驱动 |
+| **kernel/drivers/infotm/q3f/clk/clk.c**     | `Q3F`芯片对应的Clock驱动   |
+| **kernel/drivers/infotm/apollo3/clk/clk.c** | `Q3-ECO`芯片对应的Clock驱动 |
 
 **Clock DebugFS**是linux内核自带的功能，我们不需要关注相关代码文件，只需要参考下一章节选上相关配置选项就好了。
 
 ----
 ## 2.3 配置选项
 
-在QSDK的根目录下输入`make linux-menuconfig`命令
+在SDK的根目录下输入`make linux-menuconfig`命令
 ```bash
 make linux-menuconfig
 ```
@@ -314,7 +296,7 @@ int clk_set_rate(struct clk *clk, unsigned long rate);
 
 ----
 ## 2.6 调试方法
-如果要使用**Clock DebugFS**功能，那么需要在QSDK的根目录下输入`make linux-menuconfig`命令
+如果要使用**Clock DebugFS**功能，那么需要在SDK的根目录下输入`make linux-menuconfig`命令
 ```bash
 make linux-menuconfig
 ```
@@ -415,25 +397,24 @@ Device Drivers --->
 
 ----
 ## 3.1 驱动架构
-![gpio_driver_frame](gpio_driver_frame.svg)
+![gpio_driver_frame](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/gpio_driver_frame.svg)
 
 **GPIO驱动**为**GPIO Core**实现各GPIO硬件配置的细节，这样**设备驱动**就可以向**GPIO Core**申请和配置该设备需要用到的GPIO。
 
 
 ----
 ## 3.2 代码文件
-芯片的GPIO驱动文件如下，本章节会以`Apollo-2`芯片对应的驱动文件为例，该驱动文件实现了GPIO的输入输出配置，以及中断触发功能（GPIO输入模式下）。
+芯片的GPIO驱动文件如下，本章节会以`Q3F`芯片对应的驱动文件为例，该驱动文件实现了GPIO的输入输出配置，以及中断触发功能（GPIO输入模式下）。
 
 |                   文件名                    |              说明               |
 | ------------------------------------------- | ------------------------------- |
-| **kernel/drivers/infotm/apollo/gpio/gpio-apollo.c**  | `Apollo`芯片对应的GPIO驱动     |
-| **kernel/drivers/infotm/q3f/gpio/gpio-q3f.c**     | `Apollo-2`芯片对应的GPIO驱动   |
-| **kernel/drivers/infotm/apollo3/gpio/gpio-apollo3.c** | `Apollo-ECO`芯片对应的GPIO驱动 |
+| **kernel/drivers/infotm/q3f/gpio/gpio-q3f.c**     | `Q3F`芯片对应的GPIO驱动   |
+| **kernel/drivers/infotm/apollo3/gpio/gpio-apollo3.c** | `Q3-ECO`芯片对应的GPIO驱动 |
 
 ----
 ## 3.3 配置选项
 
-在QSDK的根目录下输入`make linux-menuconfig`命令
+在SDK的根目录下输入`make linux-menuconfig`命令
 ```bash
 make linux-menuconfig
 ```
@@ -628,12 +609,12 @@ GPIO引脚对应的中断号。
 
 ----
 ## 4 ADC
-ADC全称nalog to Digital Converter，即模拟数字信号转换器。芯片采用的是CPU内部集成ADC模块，在QSDK系统中，ADC模块被用于基于电平采样实现电池容量计算，传感器数据采集和按键事件侦听。
+ADC全称nalog to Digital Converter，即模拟数字信号转换器。芯片采用的是CPU内部集成ADC模块，在SDK系统中，ADC模块被用于基于电平采样实现电池容量计算，传感器数据采集和按键事件侦听。
 
 ----
 ## 4.1 驱动架构
 
-![adc subsystem](adc_driver_frame.svg)
+![adc subsystem](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/adc_driver_frame.svg)
 
 ADC驱动架构分为**设备驱动**，**ADC Core**和**ADC驱动**３个部分。**ADC驱动**为**ADC Core**实现ADC控制器硬件功能的细节，这样**设备驱动**可以调用**ADC Core**的标准API来实现各自的需求。
 
@@ -651,7 +632,7 @@ ADC驱动对应的文件如下
 
 ----
 ## 4.3 配置选项
-在QSDK的根目录下输入`make linux-menuconfig`命令
+在SDK的根目录下输入`make linux-menuconfig`命令
 ```bash
 make linux-menuconfig
 ```
@@ -853,7 +834,7 @@ PWM全称Pulse-Width Modulation，即脉冲宽度调制，用来根据输入时�
 
 ----
 ## 5.1 驱动架构
-![pwm_driver_frame](pwm_driver_frame.svg)
+![pwm_driver_frame](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/pwm_driver_frame.svg)
 
 PWM驱动架构分为**设备驱动**，**PWM Core**和**PWM驱动**３个部分。**PWM驱动**为**PWM Core**实现PWM控制器硬件功能的细节，这样**设备驱动**可以调用**PWM Core**的标准API来实现各自的需求。
 
@@ -870,7 +851,7 @@ PWM驱动对应的文件如下
 
 ----
 ## 5.3 配置选项
-在QSDK的根目录下输入`make linux-menuconfig`命令
+在SDK的根目录下输入`make linux-menuconfig`命令
 ```bash
 make linux-menuconfig
 ```
@@ -1014,11 +995,11 @@ void pwm_disable(struct pwm_device *pwm);
 ----
 ## 6 IIC
 
-IIC全称Inter-Integrated Circuit，即集成电路总线，这种总线类型是由飞利浦半导体公司在八十年代初设计出来的一种简单、双向、二线制、同步串行总线，主要是用来连接整体电路。芯片的IIC总线支持支持标准(100Kb/s)，快速(400Kb/s)，和高速(3.4Mb/s)三种传输模式，QSDK默认采用的是快速(400Kb/s)传输模式（兼容标准模式，不兼容快速模式），主要用来控制Gsensor，PMU和CMOS-Sensor等外部器件。
+IIC全称Inter-Integrated Circuit，即集成电路总线，这种总线类型是由飞利浦半导体公司在八十年代初设计出来的一种简单、双向、二线制、同步串行总线，主要是用来连接整体电路。芯片的IIC总线支持支持标准(100Kb/s)，快速(400Kb/s)，和高速(3.4Mb/s)三种传输模式，SDK默认采用的是快速(400Kb/s)传输模式（兼容标准模式，不兼容快速模式），主要用来控制Gsensor，PMU和CMOS-Sensor等外部器件。
 
 ----
 ## 6.1 驱动架构
-![iic_driver_frame](iic_driver_frame.svg)
+![iic_driver_frame](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/iic_driver_frame.svg)
 
 IIC驱动架构分为**设备驱动**，**IIC Core**和**IIC驱动**３个部分。**IIC驱动**为**IIC Core**实现IIC控制器硬件功能的细节，这样**设备驱动**可以调用**IIC Core**的标准API来实现各自的需求。
 
@@ -1035,7 +1016,7 @@ IIC驱动对应的文件如下
 ----
 ## 6.3 配置选项
 
-在QSDK的根目录下输入`make linux-menuconfig`命令
+在SDK的根目录下输入`make linux-menuconfig`命令
 ```bash
 make linux-menuconfig
 ```
@@ -1168,7 +1149,7 @@ struct i2c_msg {
 ----
 ## 6.6 调试方法
 
-在QSDK的根目录下输入`make menuconfig`命令
+在SDK的根目录下输入`make menuconfig`命令
 ```bash
 make menuconfig
 ```
@@ -1237,7 +1218,7 @@ Note: 使用`i2cset`命令的时候要确保寄存器是可写的。
 ----
 ## 7.1 驱动架构
 
-![power_driver_frame](power_driver_frame.svg)
+![power_driver_frame](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/power_driver_frame.svg)
 
 **Battery驱动**为**Power Core**实现Battery硬件配置细节，这样**Power Core**生成Battery对应的**sysfs调试接口**，以便查看和设置Battery。
 
@@ -1252,7 +1233,7 @@ Power驱动文件如下
 
 ----
 ## 7.3 配置选项
-在QSDK的根目录下输入`make linux-menuconfig`命令
+在SDK的根目录下输入`make linux-menuconfig`命令
 ```bash
 make linux-menuconfig
 ```
@@ -1312,17 +1293,16 @@ SDIO全称Secure Digital Input and Output，即安全数字输入输出，在这
 
 |                          文件名                          |                    说明                    |
 | -------------------------------------------------------- | ------------------------------------------ |
-| **kernel/drivers/infotm/common/mmc/dw_mmc_240/dw_mmc.c** | `Apollo`芯片对应的SDIO驱动                 |
-| **kernel/drivers/infotm/common/mmc/dw_mmc_280/dw_mmc.c** | `Apollo-2`和`Apollo-ECO`芯片对应的SDIO驱动 |
+| **kernel/drivers/infotm/common/mmc/dw_mmc_280/dw_mmc.c** | `Q3F`和`Q3-ECO`芯片对应的SDIO驱动 |
 
 
 ----
 ## 8.2 配置选项
-在QSDK的根目录下输入`make linux-menuconfig`命令
+在SDK的根目录下输入`make linux-menuconfig`命令
 ```bash
 make linux-menuconfig
 ```
-进入linux内核配置选项，先确保已经选择**MMC Host controller select**相关选项，这里**DW_MMC Version2.40**版本的SDIO驱动是给`Apollo`芯片用的，而**DW_MMC Version2.80**版本的SDIO驱动是给 `Apollo-2`，`Apollo-ECO`芯片用的。
+进入linux内核配置选项，先确保已经选择**MMC Host controller select**相关选项，这里**DW_MMC Version2.80**版本的SDIO驱动是给 `Q3F`，`Q3-ECO`芯片用的。
 ```bash
 Device Drivers --->
   |-InfoTM special files and drivers --->
@@ -1391,7 +1371,7 @@ Audio驱动在内核中主要分为三大块：**soc-core**、**platform-driver*
 
 ----
 ## 9.2 配置选项
-在QSDK的根目录下输入`make linux-menuconfig`命令
+在SDK的根目录下输入`make linux-menuconfig`命令
 ```bash
 make linux-menuconfig
 ```
@@ -1439,13 +1419,12 @@ DPMU全称DDR Power Management Unit，也就是DDR电源管理单位，该功能
 
 |                      文件名                      |             说明              |
 | ------------------------------------------------ | ----------------------------- |
-| **kernel/drivers/infotm/apollo/dpmu/dpmu.c** | `Apollo`芯片对应的DPMU驱动 |
-| **kernel/drivers/infotm/q3f/dpmu/dpmu.c**     | `Apollo-2`芯片对应的DPMU驱动   |
-| **kernel/drivers/infotm/apollo3/dpmu/dpmu.c** | `Apollo-ECO`芯片对应的DPMU驱动 |
+| **kernel/drivers/infotm/q3f/dpmu/dpmu.c**     | `Q3F`芯片对应的DPMU驱动   |
+| **kernel/drivers/infotm/apollo3/dpmu/dpmu.c** | `Q3-ECO`芯片对应的DPMU驱动 |
 
 ----
 ## 10.2 配置选项
-在QSDK的根目录下输入`make linux-menuconfig`命令
+在SDK的根目录下输入`make linux-menuconfig`命令
 ```bash
 make linux-menuconfig
 ```
@@ -1503,11 +1482,11 @@ Device Drivers --->
 
 ----
 ## 11 USB
-USB全称Universal Serial Bus，即通用串行总线。在QSDK中，USB控制器驱动(USB HCD)主要使用了OHCI、EHCI两种USB接口规范，OHCI支持全速和低速设备；EHCI支持高速设备。USB主要有**USB-Host**和**USB-Slave**模式，支持U盘，UVC，USB ETH，USB HID等功能。
+USB全称Universal Serial Bus，即通用串行总线。在SDK中，USB控制器驱动(USB HCD)主要使用了OHCI、EHCI两种USB接口规范，OHCI支持全速和低速设备；EHCI支持高速设备。USB主要有**USB-Host**和**USB-Slave**模式，支持U盘，UVC，USB ETH，USB HID等功能。
 
 ----
 ## 11.1 配置选项
-在QSDK的根目录下输入`make linux-menuconfig`命令
+在SDK的根目录下输入`make linux-menuconfig`命令
 ```bash
 make linux-menuconfig
 ```
