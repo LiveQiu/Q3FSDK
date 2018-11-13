@@ -1,43 +1,24 @@
-# QSDK 多媒体编程指南 - Audiobox
-
-### 适用产品
-
-| 类别 | 适用对象 |
-| --- |
-| 软件版本 | `QSDK-V2.2.0` |
-| 芯片型号 | `Apollo` `Apollo-2` `Apollo-ECO` |
-
-
-### 修订记录
-
-| 修订说明 | 日期 | 作者 |
-| --- |
-| 初版 | 2017/08/25 | 员清观 |
-
-
 ### 术语解释
-
-| 术语 | 解释 |
-| --- |
-| QSDK | 盈方微Apollo系列芯片软件开发套件 |
-| Audiobox | QSDK中音频处理模块 |
+|术语|解释|
+|-----------------|----------------------------------|
+| Audiobox | SDK中音频处理模块 |
 | API | Aplication Program Interface，应用程序接口 |
 | AEC | Acoustic Echo Cancellation，回声消除 |
 
 ## 1 概述
-Audiobox 是QSDK的音频子系统，提供音频的录音和放音功能支持，同时支持静音(Mute)控制、音量(Volume)控制、音频流格式(Format)控制、回声消除(AEC)控制等音频通道参数管理功能。另外还提供abctrl工具用来测试Audiobox各项功能
+Audiobox 是SDK的音频子系统，提供音频的录音和放音功能支持，同时支持静音(Mute)控制、音量(Volume)控制、音频流格式(Format)控制、回声消除(AEC)控制等音频通道参数管理功能。另外还提供abctrl工具用来测试Audiobox各项功能
 
 ----
 ## 2 系统架构
 
-![](image/Audiobox_frame.svg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/Audiobox_frame.svg)
 
 Audiobox作为一个独立的进程运行，应用层调用Audiobox提供的API接口实现功能。Audiobox模块包含录音、放音和AEC功能子模块支持相应的功能请求
 
 ----
 ## 3 配置选项
 ### 3.1 Audiobox配置
-在QSDK源码目录下执行命令`make menuconfig`进入配置界面，按照如下粗体配置
+在SDK源码目录下执行命令`make menuconfig`进入配置界面，按照如下粗体配置
 
 <pre>
 QSDK Options  --->
@@ -55,9 +36,9 @@ QSDK Options  --->
 ### 3.2 AEC功能配置
 
 **加载DSP驱动配置**
-AEC功能的实现依赖于DSP库。要使用DSP库，还需确认所使用的芯片平台是否带有DSP模块并确认加载DSP驱动，当前只有`Apollo-2`内部集成有DSP
+AEC功能的实现依赖于DSP库。要使用DSP库，还需确认所使用的芯片平台是否带有DSP模块并确认加载DSP驱动，当前只有`Q3F`内部集成有DSP
 
-在QSDK源码目录下执行命令`make linux-menuconfig`进入配置界面，按照如下粗体配置
+在SDK源码目录下执行命令`make linux-menuconfig`进入配置界面，按照如下粗体配置
 
 <pre>
 Device Drivers  --->
@@ -81,7 +62,7 @@ Device Drivers  --->
 请确认`ceva tl421 dsp`选项为`M`，因为DSP的驱动只能选为模块加载方式，DSP需要在初始化时载入固件镜像，而这个固件镜像必须在系统完成初始化、文件系统挂载完毕后才会被DSP驱动所识别到
 
 **关闭AEC功能的配置**
-如果无需支持AEC功能，在QSDK源码目录下执行命令`make menuconfig`进入配置界面，按照如下粗体配置
+如果无需支持AEC功能，在SDK源码目录下执行命令`make menuconfig`进入配置界面，按照如下粗体配置
 <pre>
 QSDK Options  --->
   |-Apps
@@ -96,7 +77,7 @@ QSDK Options  --->
 </pre>
 
 **启用AEC功能(使用DSP库)的配置**
-在QSDK源码目录下执行命令`make menuconfig`进入配置界面，按照如下粗体配置
+在SDK源码目录下执行命令`make menuconfig`进入配置界面，按照如下粗体配置
 <pre>
 QSDK Options --->
   |-Apps
@@ -124,7 +105,7 @@ Note: `enable arm-lib support`选项为内部测试用，启用或关闭AEC功�
 
 单路录音场景基本流程如下
 
-![](image/capture_voice_flow.svg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/capture_voice_flow.svg)
 
 **录音场景范例：**
 ```cpp
@@ -241,7 +222,7 @@ Audiobox支持两种方式读取音频帧
 
 单路放音基本流程如下
 
-![](image/playback_voice_flow.svg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/playback_voice_flow.svg)
 
 **单路放音场景范例：**
 ```cpp
@@ -338,7 +319,7 @@ Audiobox支持音频逻辑通道优先级设置，有前景音(`CHANNEL_FOREGROU
 
 **多路放音场景流程图：**
 
-![](image/dual_chan_playback_voice_sequence_flow.svg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/dual_chan_playback_voice_sequence_flow.svg)
 
 **多路放音场景范例：**
 ```cpp
@@ -520,7 +501,7 @@ int audio_get_channel(const char *channel, audio_fmt_t *fmt, int flag);
 
 **参数**
 
-- `channel` -　字符串格式的音频物理通道名称，指定了上层需要操作的设备类型，QSDK目前只支持４个固定类型物理通道，见下表
+- `channel` -　字符串格式的音频物理通道名称，指定了上层需要操作的设备类型，SDK目前只支持４个固定类型物理通道，见下表
 
 | `channel`类型 | 描述 |
 |---|
@@ -887,7 +868,7 @@ struct fr_buf_info {
 ## 7 abctrl调试工具
 ### 7.1 abctrl配置
 
-如需在系统中包含abctrl调试工具，在QSDK源码目录下执行命令`make menuconfig`进入配置界面选中`Testing abctrl`项
+如需在系统中包含abctrl调试工具，在SDK源码目录下执行命令`make menuconfig`进入配置界面选中`Testing abctrl`项
 
 <pre>
 QSDK Options --->
@@ -1030,7 +1011,7 @@ abctrl stop
 ```bash
 abctrl list
 ```
-显示系统支持的音频设备列表，如`apollo3 EVB`运行上述命令后显示：
+显示系统支持的音频设备列表，如`EVB`运行上述命令后显示：
 ```bash
 **** List of Hardware Devices Pcminfo ****
 Card 0:
