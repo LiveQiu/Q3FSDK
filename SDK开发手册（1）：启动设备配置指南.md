@@ -1,24 +1,6 @@
-# QSDK启动设备配置指南    
-
-### 适用产品
-
-| 类别 |  适用对象 |
-|---|
-| 软件版本 | `QSDK-V2.2.0` |
-| 芯片型号 | `Apollo` `Apollo-2` `Apollo-ECO` |
-
-
-### 修订记录
-
-| 修订说明 | 日期 | 作者 |
-|---|
-| 初版 | 2017/07/25 |  Xuliang Zhang |
-
 ### 术语解释
-
-| 术语 | 解释 |
-|---|
-| SDK  | Software Development Kit， 软件开发工具包 |
+|术语|解释|
+|-----------------|----------------------------------|
 | Items | item description， 文本格式的设备资源配置描述 |
 | SPI Flash | SPI interface Flash， SPI接口的串行Flash芯片 |
 | eMMC | Embedded Multi Media Card， SDIO接口的存储介质 |
@@ -43,7 +25,7 @@ QSDK支持从SPI Flash和eMMC设备进行启动，开发过程中可以根据实
 | 容量大小 | 16MB、32MB | 4GB、8GB |
 | PCB占用面积 | 小 | 大 |
 
-Note: Apollo SPI Flash平均速度6.2MB/s, Apollo2 Apollo-ECO平均速度12-15MB/s
+Note: Q3F Q3-ECO SPI Flash平均速度12-15MB/s
 
 
 
@@ -138,8 +120,7 @@ Bootloader  --->
 
 | CPU类型 | 选择配置 |
 |---|
-| `Apollo` | **iMAPx SPI(PL022) master driver** |
-| `Apollo-2`、`Apollo-ECO` | **iMAPx 4-Wire SPI  master driver** |
+| `Q3F`、`Q3-ECO` | **iMAPx 4-Wire SPI  master driver** |
 
 ```bash
 Device Drivers  --->
@@ -223,9 +204,8 @@ Filesystem images  --->
 
 | CPU类型 | 选择配置 |
 |---|
-| `Apollo` | **q3** |
-| `Apollo-2`   | **q3f** |
-| `Apollo-ECO` | **apollo3** |
+| `Q3F`   | **q3f** |
+| `Q3-ECO` | **apollo3** |
 
 ```bash
 /home/worker/QSDK$ make menuconfig
@@ -255,7 +235,7 @@ board.disk	flash
 ----
 
 ###3.3 Items分区配置
-基于MTD的SPI Flash启动设备通过U-Boot1传递带有`mtdparts`关键字的命令行参数给内核创建MTD分区。以Apollo-2为例，在**QSDK/bootloader/uboot1/include/configs/imap_q3f.h**中定义的Bootargs参数如下
+基于MTD的SPI Flash启动设备通过U-Boot1传递带有`mtdparts`关键字的命令行参数给内核创建MTD分区。以Q3F为例，在**QSDK/bootloader/uboot1/include/configs/imap_q3f.h**中定义的Bootargs参数如下
 
 ```bash
 bootargs=console=ttyAMA3,115200 mem=64M coherent_pool=2M rootfstype=squashfs root=/dev/mtdblock5 rw mtdparts=nor_flash:48k@0(u-boot0)ro,16k@0xc000(items)ro,64k@0x10000(env),256k@0x20000(uboot1),1792k@0x60000(kernel0),6400k@0x220000(system),7808k@0x860000(apps)
@@ -473,8 +453,7 @@ Bootloader  --->
 
 | CPU 类型 | 选择配置 |
 |---|
-| `Apollo` | **DW_MMC Version2.40** |
-| `Apollo-2`、`Apollo-ECO` | **DW_MMC Version2.80** |
+| `Q3F`、`Q3-ECO` | **DW_MMC Version2.80** |
 
 ```bash
 Device Drivers  --->
@@ -633,7 +612,7 @@ eMMC_OFFSET = EMMC_IMAGE_OFFSET(**2048KB**) **+** part0(**48KB**) **+** part1(**
 
 5.1.2　基于MTD的SPI Flash启动
 
-以Apollo-2为例，在**QSDK/bootloader/uboot1/include/configs/imap_q3f.h**中定义的Bootargs参数中和创建分区有关的部分
+以Q3F为例，在**QSDK/bootloader/uboot1/include/configs/imap_q3f.h**中定义的Bootargs参数中和创建分区有关的部分
 
 ```bash
 mtdparts=nor_flash:48k@0(u-boot0)ro,16k@0xc000(items)ro,64k@0x10000(env),256k@0x20000(uboot1),1792k@0x60000(kernel0),6400k@0x220000(system),7808k@0x860000(apps)
@@ -723,7 +702,7 @@ Normal分区通过挂载只读文件系统进行访问即把文件系统挂载�
 
 ** 配置Normal分区时命令行参数修改　**
 
-系统中既有Normal分区又有FTL逻辑分区时，需要修改命令行启动参数，以Apollo-2为例，在**QSDK/bootloader/apollo2/inc/image.h**文件中修改命令行参数中**root**分区为**/dev/spiblock2**
+系统中既有Normal分区又有FTL逻辑分区时，需要修改命令行启动参数，以Q3F为例，在**QSDK/bootloader/apollo2/inc/image.h**文件中修改命令行参数中**root**分区为**/dev/spiblock2**
 
 ```cpp
 #define CMDLINE_SPI_FLASH "console=ttyAMA3,115200 lpj=%d mem=%dM rootfstype=%s root=/dev/spiblock2 rw"
