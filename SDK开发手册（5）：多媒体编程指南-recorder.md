@@ -1,34 +1,17 @@
-# QSDK Recorder编程指南
-
-### 适用产品
-
-| 类别 | 适用对象 |
-|---|
-| 软件版本 | `QSDK-V2.2.0` |
-| 芯片型号 | `Apollo` `Apollo-2` `Apollo-ECO` |
-
-### 修订记录
-
-| 修订说明 | 日期 | 作者 |
-|---|
-| 初版 | 2017/7/12 | 倪高鹏 |
-
 ### 术语解释
-
-| 术语 | 解释 |
-|---|
-| QSDK  | 盈方微Apollo系列芯片软件开发套件 |
-| Videobox | QSDK中视频处理模块 |
-| Audiobox | QSDK中音频处理模块 |
+|术语|解释|
+|-----------------|----------------------------------|
+| Videobox | SDK中视频处理模块 |
+| Audiobox | SDK中音频处理模块 |
 | IPU | Image Process Unit，图像处理单元，Videobox中基本处理单元 |
 | FFmpeg | FFmpeg是一个开源免费跨平台的视频和音频流处理软件，采用LGPL或GPL许可证。它提供了录制、转换以及流化音视频的完整解决方案 |
 
 ----
 ## 1 关于Recorder
 
-Recorder是专门为QSDK开发的提供录像功能的库，需要与Videobox及Audiobox配合使用。Recorder分别从Videobox和Audiobox获取视频和音频帧，然后封装到Container中，并保存到本地储存设备。QSDK中，应用层可以通过调用Recorder库实现录像功能。
+Recorder是专门为SDK开发的提供录像功能的库，需要与Videobox及Audiobox配合使用。Recorder分别从Videobox和Audiobox获取视频和音频帧，然后封装到Container中，并保存到本地储存设备。SDK中，应用层可以通过调用Recorder库实现录像功能。
 
-Recorder是QSDK的可选组件，如果开发者已经封装音视频的流程，可以在配置选项中禁用Recorder以达到减小镜像的目的。
+Recorder是SDK的可选组件，如果开发者已经封装音视频的流程，可以在配置选项中禁用Recorder以达到减小镜像的目的。
 
 Recorder支持的功能：
 
@@ -41,14 +24,14 @@ Recorder支持的功能：
 ## 2 系统概述
 ## 2.1 系统架构
 
-![](image/Recorder_1.svg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/Recorder_1.svg)
 
 应用层直接调用Recorder接口，Recorder通过创建自己的线程而直接运行在上层应用程序进程中。
 
 ----
 ## 2.2 系统流程
 
-![](image/Recorder_2.svg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/Recorder_2.svg)
 
 应用层直接调用Recorder的接口，进行录制、设置参数等操作。Recorder会通过IPC接口从Videobox中获取编码后的视频数据，然后通过IPC接口从Audiobox中获取PCM数据进行编码，最后使用FFmpeg的接口将Audio和Video封装进Container中。当录制完成或发生错误时，会通过Event Callback的方式通知上层。
 
@@ -101,10 +84,9 @@ QSDK Options --->
 
 | 配置项        | 描述 |
 | --- | --- |
-| **H1264** | 如果编码格式为H264，需要开启此选项，QSDK V2.3.0及之后版本使用`Video Encoder`选中`h1264` |
-| **H2** | 如果编码格式为H265，需要开启此选项（在`Apollo` 开发板上适用），QSDK V2.3.0及之后版本使用`Video Encoder`选中`h2` |
-| **H2V4** | 如果编码格式为H265，需要开启此选项（在`Apollo-ECO`开发板上适用）QSDK V2.3.0及之后版本使用`Video Encoder`选中`h2v4` |
-| **Video Encoder** | QSDK V2.3.0及之后版本编码模块，默认需要开启。如果编码格式为H264，需要开启子菜单选项`h1264`，如果编码格式为H265，`Apollo`开发板上需要开启子菜单选项`h2`，`Apollo-ECO`开发板上需要开启子菜单选项`h2v4`，`h1264`与`h2 encode lib`为`Video Encoder`子菜单选项，`h2`，`h2v4`，`NONE`为`h2 encoder lib`子菜单选项 |
+| **H1264** | 如果编码格式为H264，需要开启此选项，使用`Video Encoder`选中`h1264` |
+| **H2V4** | 如果编码格式为H265，需要开启此选项（在`Q3-ECO`开发板上适用）使用`Video Encoder`选中`h2v4` |
+| **Video Encoder** | 编码模块，默认需要开启。如果编码格式为H264，需要开启子菜单选项`h1264`，如果编码格式为H265，`Q3-ECO`开发板上需要开启子菜单选项`h2v4`，`h1264`与`h2 encode lib`为`Video Encoder`子菜单选项，`h2`，`h2v4`，`NONE`为`h2 encoder lib`子菜单选项 |
 
 **FFmpeg配置项**
 ```
@@ -145,7 +127,7 @@ Note: 在使用Recorder功能之前，需要确保Videobox及Audiobox已经在�
 
 录制过程如下图所示。
 
-![](image/Recorder_3.svg)
+![](https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/Recorder_3.svg)
 
 ### Step 1: 注册Event
 
@@ -330,7 +312,7 @@ Recorder退出时，需要把当前注册的Event给撤销掉。
 
 Recorder支持双轨道视频录像，它会将两路视频和一路音频打包进同一个录像文件。两路视频的优点是：在没有硬件解码的时候，可以用低分辨率视频进行流畅播放；在有硬件解码或CPU比较强的时候，用大分辨率视频进行播放。
 
-在`Apollo-2`及`Apollo-ECO`的行车记录仪产品中，使用双轨道视频录像时，会将1080p视频和320×240分辨率的视频同时录制到一个录像文件中。本地回放时，选择320×240的视频来进行播放。因为这两颗芯片没有硬件解码，选择小分辨率视频轨道来回放会比较流畅。同时，PC回放录像文件时，不会看到320×240的小分辨率视频。
+在行车记录仪产品中，使用双轨道视频录像时，会将1080p视频和320×240分辨率的视频同时录制到一个录像文件中。本地回放时，选择320×240的视频来进行播放。因为这两颗芯片没有硬件解码，选择小分辨率视频轨道来回放会比较流畅。同时，PC回放录像文件时，不会看到320×240的小分辨率视频。
 
 ```cpp
 #include <qsdk/vplay.h>
@@ -874,7 +856,7 @@ Note: 设置字符串时，需要把Size设置为字符串长度。
 
 用二进制编辑打开，可以在文件末尾搜索到相应的二进制字符串。另外，想取到用户数据信息，解析`meta`标签里面的`user`标签即可。
 
-<img src="image/Recorder_4.png" width="80%"/>
+<img src="https://github.com/InfoTM-SDK/Q3FSDK/blob/master/wiki_res/Recorder_4.png" width="80%"/>
 
 ----
 ## 3.4 动态控制
@@ -1023,7 +1005,7 @@ INFO ->lib/qrecorder.cpp:707:fast motion mode by player ->10
 ----
 ## 3.6 高速摄影（Slow-Motion）
 
-高速摄影是一种使用非常快的快门速度来捕捉图像的技术，最常用于那些通常情况下人眼无法看到的场景的拍摄。QSDK中，高速摄影不会改变Sensor采集的实际帧率，而是通过修改录像时间截达到慢速播放的目的。Recorder可以通过控制命令来设置高速摄影的倍速。
+高速摄影是一种使用非常快的快门速度来捕捉图像的技术，最常用于那些通常情况下人眼无法看到的场景的拍摄。SDK中，高速摄影不会改变Sensor采集的实际帧率，而是通过修改录像时间截达到慢速播放的目的。Recorder可以通过控制命令来设置高速摄影的倍速。
 
 ```cpp
 recorder = vplay_new_recorder(&recorderInfo);
