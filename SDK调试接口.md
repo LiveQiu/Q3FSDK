@@ -200,18 +200,11 @@ Starting logging: OK	|执行 init.d 的启动脚本
 Videobox started	|videobox 启动完成
 
 # SDK开发
-* 如何添加一个产品，并对产品进行模块配置？
-
-* 如何根据产品需要配置产品的json文件？
-
-* 如何根据产品硬件配置固件的item文件？
-
-* 如何增添一款新的Camera Sensor？
-
-* 如何增添一款新的Wifi模块？
-
-* 如何增添自己的应用程序，并添加到启动流程中？
-
-* 对接其他平台时，如何获得Q3F系统平台的音视频数据？
-
-* 更详细的软硬件资料和更专业的技术支持如何获得？
+* [SDK开发手册（1）：启动设备配置指南](https://github.com/InfoTM-SDK/Q3FSDK/wiki/SDK%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%EF%BC%881%EF%BC%89%EF%BC%9A%E5%90%AF%E5%8A%A8%E8%AE%BE%E5%A4%87%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97)
+* [SDK开发手册（2）：设备驱动指南](https://github.com/InfoTM-SDK/Q3FSDK/wiki/SDK%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%EF%BC%882%EF%BC%89%EF%BC%9A%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8%E6%8C%87%E5%8D%97)
+* [SDK开发手册（3）：多媒体编程指南 audiobox](https://github.com/InfoTM-SDK/Q3FSDK/wiki/SDK%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%EF%BC%883%EF%BC%89%EF%BC%9A%E5%A4%9A%E5%AA%92%E4%BD%93%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97-audiobox)
+* [SDK开发手册（4）：多媒体编程指南 videobox](https://github.com/InfoTM-SDK/Q3FSDK/wiki/SDK%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%EF%BC%884%EF%BC%89%EF%BC%9A%E5%A4%9A%E5%AA%92%E4%BD%93%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97-videobox)
+* [SDK开发手册（5）：多媒体编程指南 recorder](https://github.com/InfoTM-SDK/Q3FSDK/wiki/SDK%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%EF%BC%885%EF%BC%89%EF%BC%9A%E5%A4%9A%E5%AA%92%E4%BD%93%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97-recorder)
+* [SDK开发手册（6）：Camera Sensor调试指南](https://github.com/InfoTM-SDK/Q3FSDK/wiki/SDK%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%EF%BC%886%EF%BC%89%EF%BC%9ACamera-Sensor%E8%B0%83%E8%AF%95%E6%8C%87%E5%8D%97)
+* [SDK开发手册（7）：Wi Fi模块调试指南](https://github.com/InfoTM-SDK/Q3FSDK/wiki/SDK%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%EF%BC%887%EF%BC%89%EF%BC%9AWi-Fi%E6%A8%A1%E5%9D%97%E8%B0%83%E8%AF%95%E6%8C%87%E5%8D%97)
+* [SDK开发代码示例](https://github.com/InfoTM-SDK/Q3FSDK/wiki/SDK%E5%BC%80%E5%8F%91%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B)
